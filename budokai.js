@@ -237,6 +237,12 @@ function shuffle(array) {
 // View
 
 var render = {
+  players_list : ["Abel", "Adon", "Akuma", "Balrog", "Blanka", "C Viper", "Cammy", "Chun Li", 
+      "Cody", "Dan", "Decapre", "Dee Jay", "Dhalsim", "Dudley", "E Honda", "El Fuerte", "Elena", 
+      "Evil Ryu", "Fei Long", "Gen", "Gouken", "Guile", "Guy", "Hakan", "Hugo", "Ibuki", "Juri", "Ken", 
+      "M Bison", "Makoto", "Oni", "Poison", "Rolento", "Rose", "Rufus", "Ryu", "Sagat", "Sakura", "Seth", 
+      "T Hawk", "Vega", "Yang", "Yun", "Zangief"],
+
   events: function(es) {
     var $f = document.createDocumentFragment();
     es.forEach(e => { $f.appendChild(render.event(e)); });
@@ -308,8 +314,16 @@ var render = {
     var $p1 = render.player(m.p1, m);
     $f.appendChild($p1);
 
+    var $ch1 = document.createElement('select');
+    this.populate_sf4_list($ch1);
+    $f.appendChild($ch1);
+
     var $p2 = render.player(m.p2, m);
     $f.appendChild($p2);
+
+    var $ch2 = document.createElement('select');
+    this.populate_sf4_list($ch2);
+    $f.appendChild($ch2);
 
     var $reset = document.createElement('button');
     $reset.textContent = 'X';
@@ -317,6 +331,16 @@ var render = {
     $f.appendChild($reset);
 
     return $f;
+  },
+
+  populate_sf4_list: function(p) {
+    $lng = this.players_list.length;
+    for (var i = 0; i < $lng; i++) {
+      var $option = document.createElement("option");
+      $option.text = this.players_list[i];
+      p.options.add($option);
+    };
+    
   },
 
   player: function(p, m) {
