@@ -237,11 +237,14 @@ function shuffle(array) {
 // View
 
 var render = {
-  players_list : ["Abel", "Adon", "Akuma", "Balrog", "Blanka", "C Viper", "Cammy", "Chun Li", 
-      "Cody", "Dan", "Decapre", "Dee Jay", "Dhalsim", "Dudley", "E Honda", "El Fuerte", "Elena", 
-      "Evil Ryu", "Fei Long", "Gen", "Gouken", "Guile", "Guy", "Hakan", "Hugo", "Ibuki", "Juri", "Ken", 
-      "M Bison", "Makoto", "Oni", "Poison", "Rolento", "Rose", "Rufus", "Ryu", "Sagat", "Sakura", "Seth", 
-      "T Hawk", "Vega", "Yang", "Yun", "Zangief"],
+  players_list : ["Abel", "Adon", "Akuma", "Balrog", "Blanka", "C Viper",
+                  "Cammy", "Chun Li",  "Cody", "Dan", "Decapre", "Dee Jay",
+                  "Dhalsim", "Dudley", "E Honda", "El Fuerte", "Elena",
+                  "Evil Ryu", "Fei Long", "Gen", "Gouken", "Guile", "Guy",
+                  "Hakan", "Hugo", "Ibuki", "Juri", "Ken", "M Bison",
+                  "Makoto", "Oni", "Poison", "Rolento", "Rose", "Rufus",
+                  "Ryu", "Sagat", "Sakura", "Seth", "T Hawk", "Vega",
+                  "Yang", "Yun", "Zangief"],
 
   events: function(es) {
     var $f = document.createDocumentFragment();
@@ -296,7 +299,6 @@ var render = {
   },
 
   level: function(l) {
-
     var $f = document.createElement('li');
     $f.appendChild(render.matches(l));
     return $f;
@@ -314,16 +316,12 @@ var render = {
     var $p1 = render.player(m.p1, m);
     $f.appendChild($p1);
 
-    var $ch1 = document.createElement('select');
-    this.populate_sf4_list($ch1);
-    $f.appendChild($ch1);
+    $f.appendChild(render.chars_list(m.p1));
 
     var $p2 = render.player(m.p2, m);
     $f.appendChild($p2);
 
-    var $ch2 = document.createElement('select');
-    this.populate_sf4_list($ch2);
-    $f.appendChild($ch2);
+    $f.appendChild(render.chars_list(m.p2));
 
     var $reset = document.createElement('button');
     $reset.textContent = 'X';
@@ -333,14 +331,20 @@ var render = {
     return $f;
   },
 
-  populate_sf4_list: function(p) {
-    $lng = this.players_list.length;
-    for (var i = 0; i < $lng; i++) {
+  chars_list: function(p) {
+    var $p = document.createElement('select');
+    render.players_list.forEach(name => {
       var $option = document.createElement("option");
-      $option.text = this.players_list[i];
-      p.options.add($option);
-    };
-    
+      $option.text = name;
+      if (name === p.char)
+        $option.setAttribute('selected', true);
+      $p.options.add($option);
+    });
+
+    $p.addEventListener('change', event => {
+      p.char = $p.value;
+    });
+    return $p;
   },
 
   player: function(p, m) {
@@ -407,8 +411,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $players.addEventListener('input', () => { v.refresh(); });
 
-  $list.addEventListener('click', () => {
-    v.refresh();
+  // XXX: should use DOM-abstract events to trigger a refresh
+  $list.addEventListener('click', event => {
+    if (event.target.tagName !== 'SELECT' &&
+        event.target.tagName !== 'OPTION') {
+      v.refresh();
+    }
   });
 
   var $shuffle = document.querySelector('#shuffle-players');
