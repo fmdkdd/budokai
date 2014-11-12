@@ -316,12 +316,21 @@ var render = {
     var $p1 = render.player(m.p1, m);
     $f.appendChild($p1);
 
-    $f.appendChild(render.chars_list(m.p1));
+    var $char_p1 = render.chars_list(m.p1, m.p1_char);
+    $char_p1.addEventListener('change', (event) => {
+      m.p1_char = event.target.value;
+    });
+
+    $f.appendChild($char_p1);
 
     var $p2 = render.player(m.p2, m);
     $f.appendChild($p2);
 
-    $f.appendChild(render.chars_list(m.p2));
+    var $char_p2 = render.chars_list(m.p2, m.p2_char);
+    $char_p2.addEventListener('change', (event) => {
+      m.p2_char = event.target.value;
+    });
+    $f.appendChild($char_p2);
 
     var $reset = document.createElement('button');
     $reset.textContent = 'X';
@@ -331,19 +340,17 @@ var render = {
     return $f;
   },
 
-  chars_list: function(p) {
+  chars_list: function(p, p_char) {
     var $p = document.createElement('select');
+
     render.players_list.forEach(name => {
       var $option = document.createElement("option");
       $option.text = name;
-      if (name === p.char)
+      if (name === p_char)
         $option.setAttribute('selected', true);
       $p.options.add($option);
     });
 
-    $p.addEventListener('change', event => {
-      p.char = $p.value;
-    });
     return $p;
   },
 
