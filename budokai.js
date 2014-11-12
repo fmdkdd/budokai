@@ -416,6 +416,8 @@ document.addEventListener('DOMContentLoaded', () => {
     v.refresh();
   });
 
+  $n.dispatchEvent(new Event('input'));
+
   $players.addEventListener('input', () => { v.refresh(); });
 
   // XXX: should use DOM-abstract events to trigger a refresh
