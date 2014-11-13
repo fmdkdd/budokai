@@ -77,9 +77,25 @@ var match = {
 
 // Return the name of a player
 function name(player) {
+  if (player == null) return player;
   if (typeof player === 'function') return name(player());
-  else return player;
+  if (typeof player === 'object') return name(player.name);
+  return player;
 }
+
+function last_char(player) {
+  if (player == null) return player;
+  if (typeof player === 'function') return last_char(player());
+  if (typeof player === 'object') return last_char(player.last_char);
+  return player;
+}
+
+function set_last_char(player, last_char) {
+  if (player == null) return;
+  if (typeof player === 'function') return set_last_char(player(), last_char);
+  if (typeof player === 'object') return player.last_char = last_char;
+}
+
 
 // Return the list of winners from a list of matches.
 function winners(matches) {
@@ -322,6 +338,7 @@ var render = {
     var $char_p1 = render.chars_list(m.p1, m.p1_char);
     $char_p1.addEventListener('change', (event) => {
       m.p1_char = event.target.value;
+      set_last_char(m.p1, m.p1_char);
     });
 
     $f.appendChild($char_p1);
@@ -332,6 +349,7 @@ var render = {
     var $char_p2 = render.chars_list(m.p2, m.p2_char);
     $char_p2.addEventListener('change', (event) => {
       m.p2_char = event.target.value;
+      set_last_char(m.p2, m.p2_char);
     });
     $f.appendChild($char_p2);
 
@@ -350,7 +368,9 @@ var render = {
   chars_list: function(p, p_char) {
     var $p = document.createElement('select');
 
-    if (p_char == null) {
+    var ch = p_char || last_char(p);
+
+    if (ch == null) {
       var $default = document.createElement('option');
       $default.setAttribute('disabled', true);
       $default.setAttribute('selected', true);
@@ -360,7 +380,7 @@ var render = {
     render.players_list.forEach(name => {
       var $option = document.createElement("option");
       $option.text = name;
-      if (name === p_char)
+      if (name === ch)
         $option.setAttribute('selected', true);
       $p.options.add($option);
     });
@@ -420,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
       $name.setAttribute('type', 'text');
       $name.value = 'P' + i;
       $f.appendChild($name);
-      players.push(() => $name.value);
+      players.push({name: () => $name.value});
     });
 
     $players.innerHTML = '';
