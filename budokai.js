@@ -103,7 +103,7 @@ function best(n, matches, scoring) {
       // Convert to array for sorting
       var scores_array = [];
       scores(matches, scoring)
-        .forEach((v,k) => { scores_array.push([k,v]) });
+        .forEach(([k,v]) => { scores_array.push([k,v]) });
       scores_array.sort(([k1,v1], [k2,v2]) => v2 - v1);
 
       var best_player = scores_array[n][0];
@@ -112,9 +112,9 @@ function best(n, matches, scoring) {
   }
 }
 
-// Return a Map of (unsorted) scores for the given matches and a
-// scoring function.  The scoring function takes a player and
-// match, and returns the player's score as a number.
+// Return a Map of (sorted) scores for the given matches and a scoring
+// function.  The scoring function takes a player and match, and
+// returns the player's score as a number.
 function scores(matches, scoring) {
   if (scoring == null) scoring = defaultScoring;
 
@@ -127,7 +127,10 @@ function scores(matches, scoring) {
     });
   });
 
-  return scores;
+  var sorted_scores = [...scores];
+  sorted_scores.sort(([k1,v1],[k2,v2]) => v2 - v1);
+
+  return sorted_scores;
 }
 
 function defaultScoring(player, match) {
@@ -265,7 +268,7 @@ var render = {
     $f.appendChild($matches);
 
     var $scores = document.createElement('table');
-    scores(l).forEach((v,k) => {
+    scores(l).forEach(([k,v]) => {
       var $s = document.createElement('tr');
 
       var $name = document.createElement('td');
