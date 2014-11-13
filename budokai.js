@@ -337,7 +337,11 @@ var render = {
 
     var $reset = document.createElement('button');
     $reset.textContent = 'X';
-    $reset.addEventListener('click', () => { m.winner = null; });
+    $reset.addEventListener('click', () => {
+      m.winner = null;
+      m.p1_char = null;
+      m.p2_char = null;
+    });
     $f.appendChild($reset);
 
     return $f;
@@ -345,6 +349,13 @@ var render = {
 
   chars_list: function(p, p_char) {
     var $p = document.createElement('select');
+
+    if (p_char == null) {
+      var $default = document.createElement('option');
+      $default.setAttribute('disabled', true);
+      $default.setAttribute('selected', true);
+      $p.options.add($default);
+    }
 
     render.players_list.forEach(name => {
       var $option = document.createElement("option");
