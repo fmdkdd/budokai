@@ -3,16 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title>Budokai</title>
+    <link rel="stylesheet" href="style.css">
     <script src="budokai.js"></script>
   </head>
   <body>
     <input id="n-players" type="range" min="4" max="9">
 
-    <div id="players">
+    <section id="players">
       <h2>Players</h2>
       <button id="shuffle-players">Shuffle</button>
       <div id="player-list"> </div>
-    </div>
-    <div id="match-list"></div>
+    </section>
+
+    <section id="matches">
+      <h2>Matches</h2>
+      <div id="match-list"></div>
+    </section>
   </body>
 </html>

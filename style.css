@@ -1,0 +1,120 @@
+* { margin: 0; padding: 0; }
+
+html {
+  font-size: 20px;
+  color: #444;
+}
+
+body {
+  background: url("bg.png");
+  margin: 2rem 1rem;
+}
+
+section {
+  margin-top: 2rem;
+}
+
+section h2 {
+  margin-bottom: 1rem;
+}
+
+#player-list input {
+  width: 5rem;
+  padding: .15rem .3rem;
+  margin-right: .3rem;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+#match-list {
+  margin-left: 1rem;
+}
+
+.reset-match {
+  display: none;
+}
+
+/* League */
+
+.league-content {
+  display: flex;
+}
+
+.league-matches {
+  margin-right: 4rem;
+}
+
+.league-scores {
+  border-collapse: collapse;
+}
+
+.league-scores th {
+  text-align: left;
+}
+
+.league-scores td {
+  border-top: 1px dotted #aaa;
+  padding: .3rem 0;
+}
+
+.league-scores tr:first-child {
+  border-bottom: 1px solid #666;
+}
+
+.league-scores td:nth-child(2),
+.league-scores th:nth-child(2) {
+  text-align: right;
+}
+
+.league-matches {
+  display: table;
+}
+
+.league .match {
+  display: table-row;
+  height: 1.5rem;
+}
+
+.league .player1, .league .player2 {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.league .player1 .player-info {
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: baseline;
+}
+
+.league .player1 {
+  padding-right: 1rem;
+}
+
+.player-name {
+  padding: 0 .3rem;
+}
+
+/* Tourney */
+
+.tourney-matches {
+  display: flex;
+  align-items: stretch;
+}
+
+.level {
+  list-style: none;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  margin-right: 2rem;
+}
+
+.tourney .match {
+  margin: .5rem 0;
+}
+
+.tourney .winner:before {
+  content: '勝者: ';
+  color: #ca1;
+}

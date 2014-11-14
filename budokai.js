@@ -277,13 +277,35 @@ var render = {
   },
 
   league: function(l) {
-    var $f = document.createDocumentFragment();
+    var $f = document.createElement('div');
+    $f.classList.add('league');
+
+    var $header = document.createElement('h3');
+    $header.textContent = 'League';
+    $f.appendChild($header);
+
+    var $div = document.createElement('div');
+    $div.classList.add('league-content');
 
     var $matches = document.createElement('ol');
+    $matches.classList.add('league-matches');
     l.forEach(m => { $matches.appendChild(render.match(m)); });
-    $f.appendChild($matches);
+    $div.appendChild($matches);
 
     var $scores = document.createElement('table');
+    $scores.classList.add('league-scores');
+    var $scores_head = document.createElement('tr');
+
+    var $th_player = document.createElement('th');
+    $th_player.textContent = 'Player';
+    $scores_head.appendChild($th_player);
+
+    var $th_score = document.createElement('th');
+    $th_score.textContent = 'Score';
+    $scores_head.appendChild($th_score);
+
+    $scores.appendChild($scores_head);
+
     scores(l).forEach(([k,v]) => {
       var $s = document.createElement('tr');
 
@@ -298,62 +320,87 @@ var render = {
       $scores.appendChild($s);
     });
 
-    $f.appendChild($scores);
+    $div.appendChild($scores);
+
+    $f.appendChild($div);
 
     return $f;
   },
 
   tourney: function(t) {
     var $f = document.createElement('div');
+    $f.classList.add('tourney');
 
-    var $header = document.createElement('h2');
+    var $header = document.createElement('h3');
     $header.textContent = 'Tourney';
     $f.appendChild($header);
 
-    var $t = document.createElement('ol');
+    var $t = document.createElement('div');
+    $t.classList.add('tourney-matches');
     t.forEach(l => { $t.appendChild(render.level(l)); });
     $f.appendChild($t);
+
+    var $winnerLevel = document.createElement('ol');
+    $winnerLevel.classList.add('level');
+
+    var $winner = document.createElement('span');
+    $winner.classList.add('player-name');
+    $winner.classList.add('winner');
+    $winner.textContent = name(last(t)[0].winner);
+    $winnerLevel.appendChild($winner);
+
+    $t.appendChild($winnerLevel);
 
     return $f;
   },
 
   level: function(l) {
-    var $f = document.createElement('li');
+    var $f = document.createDocumentFragment();
     $f.appendChild(render.matches(l));
     return $f;
   },
 
   matches: function(ms) {
     var $f = document.createElement('ol');
+    $f.classList.add('level');
     ms.forEach(m => { $f.appendChild(render.match(m)); });
     return $f;
   },
 
   match: function(m) {
     var $f = document.createElement('li');
+    $f.classList.add('match');
+
+    var $player1 = document.createElement('div');
+    $player1.classList.add('player1');
+    $f.appendChild($player1);
 
     var $p1 = render.player(m.p1, m);
-    $f.appendChild($p1);
+    $player1.appendChild($p1);
 
     var $char_p1 = render.chars_list(m.p1, m.p1_char);
     $char_p1.addEventListener('change', (event) => {
       m.p1_char = event.target.value;
       set_last_char(m.p1, m.p1_char);
     });
+    $p1.appendChild($char_p1);
 
-    $f.appendChild($char_p1);
+    var $player2 = document.createElement('div');
+    $player2.classList.add('player2');
+    $f.appendChild($player2);
 
     var $p2 = render.player(m.p2, m);
-    $f.appendChild($p2);
+    $player2.appendChild($p2);
 
     var $char_p2 = render.chars_list(m.p2, m.p2_char);
     $char_p2.addEventListener('change', (event) => {
       m.p2_char = event.target.value;
       set_last_char(m.p2, m.p2_char);
     });
-    $f.appendChild($char_p2);
+    $p2.appendChild($char_p2);
 
     var $reset = document.createElement('button');
+    $reset.classList.add('reset-match');
     $reset.textContent = 'X';
     $reset.addEventListener('click', () => {
       m.winner = null;
@@ -378,7 +425,7 @@ var render = {
     }
 
     render.players_list.forEach(name => {
-      var $option = document.createElement("option");
+      var $option = document.createElement('option');
       $option.text = name;
       if (name === ch)
         $option.setAttribute('selected', true);
@@ -389,7 +436,8 @@ var render = {
   },
 
   player: function(p, m) {
-    var $f = document.createDocumentFragment();
+    var $f = document.createElement('div');
+    $f.classList.add('player-info');
 
     var $button = document.createElement('input');
     $button.setAttribute('type', 'radio');
@@ -402,7 +450,8 @@ var render = {
     $f.appendChild($button);
 
     var $label = document.createElement('label');
-    $label.textContent = name(p) || 'tbd';
+    $label.classList.add('player-name');
+    $label.textContent = name(p);
     $f.appendChild($label);
 
     return $f;
