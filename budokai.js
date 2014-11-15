@@ -125,8 +125,9 @@ function best(n, matches, scoring) {
         .forEach(([k,v]) => { scores_array.push([k,v]) });
       scores_array.sort(([k1,v1], [k2,v2]) => v2 - v1);
 
-      var best_player = scores_array[n][0];
-      return best_player;
+      var best = scores_array[n];
+      if (best[1] === 0) return undefined;
+      else return best[0];
     }
   }
 }
