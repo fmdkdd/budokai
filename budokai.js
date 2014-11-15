@@ -35,10 +35,7 @@ function events(players) {
   }
 
   else if (n === 7) {
-    var [g1, g2] = split(players, [6,1]);
-    var l = pairs(g1);
-    var w = winners(l);
-    return [l, tourney(w.concat(g2))];
+    return [tourney(players.concat(last(players)))];
   }
 
   else if (n === 9) {
@@ -54,10 +51,16 @@ function events(players) {
 
 var match = {
   new: function(p1, p2) {
-    return {
+    var m = {
       __proto__: this,
       p1, p2,
     };
+
+    // Match is a bye
+    if (p1 === p2)
+      m.winner = p1;
+
+    return m;
   },
 
   get winner() { return () => this.win },
@@ -385,19 +388,21 @@ var render = {
     });
     $p1.appendChild($char_p1);
 
-    var $player2 = document.createElement('div');
-    $player2.classList.add('player2');
-    $f.appendChild($player2);
+    if (m.p1 !== m.p2) {
+      var $player2 = document.createElement('div');
+      $player2.classList.add('player2');
+      $f.appendChild($player2);
 
-    var $p2 = render.player(m.p2, m);
-    $player2.appendChild($p2);
+      var $p2 = render.player(m.p2, m);
+      $player2.appendChild($p2);
 
-    var $char_p2 = render.chars_list(m.p2, m.p2_char);
-    $char_p2.addEventListener('change', (event) => {
-      m.p2_char = event.target.value;
-      set_last_char(m.p2, m.p2_char);
-    });
-    $p2.appendChild($char_p2);
+      var $char_p2 = render.chars_list(m.p2, m.p2_char);
+      $char_p2.addEventListener('change', (event) => {
+        m.p2_char = event.target.value;
+        set_last_char(m.p2, m.p2_char);
+      });
+      $p2.appendChild($char_p2);
+    }
 
     var $reset = document.createElement('button');
     $reset.classList.add('reset-match');
