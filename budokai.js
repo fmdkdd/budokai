@@ -22,7 +22,7 @@ function events(players) {
     var [g1, g2] = split(players, [3,2]);
     var l = league(g1);
     var w = best(2, l);
-    return [l, tourney([w[0]].concat(g2).concat(w[1]))];
+    return [l, tourney(mix([w, g2]))];
   }
 
   else if (n === 6) {
@@ -31,7 +31,7 @@ function events(players) {
     var l2 = league(g2);
     var w1 = best(2, l1);
     var w2 = best(2, l2);
-    return [l1, l2, tourney([w1[0], w2[0], w1[1], w2[1]])];
+    return [l1, l2, tourney(mix([w1, w2]))];
   }
 
   else if (n === 7) {
@@ -42,7 +42,7 @@ function events(players) {
     var [g1, g2] = split(players, [3,6]);
     var l = league(g1);
     var w = best(2, l);
-    return [l, tourney([w[0]].concat(g2).concat(w[1]))];
+    return [l, tourney(mix([w, g2]))];
   }
 
   else
@@ -238,6 +238,16 @@ function range(end, start) {
   else return range(end - 1, start).concat(end);
 }
 
+// Mix players out of elimination rounds as to not meet again in the
+// first level of a tourney.  [[1,2],[3,4],...] yields [1,3,2,4,...].
+function mix(groups) {
+  if (groups[0].length === 0) return [];
+
+  var heads = groups.map(g => g[0]);
+  var tails = groups.map(g => g.slice(1));
+
+  return heads.concat(mix(tails));
+}
 function last(matches) {
   return matches[matches.length - 1];
 }
