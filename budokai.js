@@ -7,6 +7,8 @@
 // 6. Can change winner of match at will
 
 // TODO: static views for posterity
+// TODO: different options (in number of matches) where it makes sense
+// TODO: losers bracket as an option
 
 function events(players) {
   var n = players.length;
