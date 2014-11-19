@@ -47,6 +47,13 @@ function events(players) {
     return [l, tourney(mix([w, g2]))];
   }
 
+  else if (n === 10) {
+    var [g1, g2] = split(players, [4,6]);
+    var l = league(g1);
+    var w = best(2, l);
+    return [l, tourney(mix([w, g2]))];
+  }
+
   else
     throw "Don't know how to organize such an event";
 }
