@@ -536,10 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // XXX: should use DOM-abstract events to trigger a refresh
   $list.addEventListener('click', event => {
-    if (event.target.tagName !== 'SELECT' &&
-        event.target.tagName !== 'OPTION') {
-      v.refresh();
-    }
+    // Need the setTimeout to let the event bubble and be caught by
+    // other listeners before recreating the view
+    setTimeout(() => { v.refresh(); } , 0);
   });
 
   var $shuffle = document.querySelector('#shuffle-players');
