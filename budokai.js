@@ -243,7 +243,8 @@ function range(end, start) {
 // Mix players out of elimination rounds as to not meet again in the
 // first level of a tourney.  [[1,2],[3,4],...] yields [1,3,2,4,...].
 function mix(groups) {
-  if (groups[0].length === 0) return [];
+  if (groups[0].length === 0) return groups[1];
+  if (groups[1].length === 0) return groups[0];
 
   var heads = groups.map(g => g[0]);
   var tails = groups.map(g => g.slice(1));
