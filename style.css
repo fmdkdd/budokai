@@ -26,6 +26,8 @@ section h2 {
   border: 1px solid #ccc;
 }
 
+.off {display: none}
+
 #match-list {
   margin-left: 1rem;
 }

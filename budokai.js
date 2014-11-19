@@ -507,19 +507,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $n.addEventListener('input', () => {
     var n = parseInt($n.value, 10);
-    var $f = document.createDocumentFragment();
     var players = [];
 
     range(n).forEach(i => {
-      var $name = document.createElement('input');
-      $name.setAttribute('type', 'text');
-      $name.value = 'P' + i;
-      $f.appendChild($name);
+      if ($players.childNodes[i] == null) {
+        var $name = document.createElement('input');
+        $name.setAttribute('type', 'text');
+        $name.value = 'P' + i;
+        $players.appendChild($name);
+      } else {
+        $players.childNodes[i].classList.remove('off');
+        var $name = $players.childNodes[i];
+      }
       players.push({name: () => $name.value});
     });
 
-    $players.innerHTML = '';
-    $players.appendChild($f);
+    range($players.childNodes.length-1, n+1).forEach(i => {
+      $players.childNodes[i].classList.add('off');
+    });
 
     v.events = events(players);
     v.refresh();
