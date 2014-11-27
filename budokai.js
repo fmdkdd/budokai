@@ -55,7 +55,7 @@ function events(players) {
   }
 
   else
-    throw "Don't know how to organize such an event";
+    return [tourney(players)];
 }
 
 var match = {
@@ -190,11 +190,19 @@ function isLeague(event) {
 function tourney(players) {
   if (players.length === 2)
     return [[match.new(players[0], players[1])]];
-  if (players.length % 2 === 1)
-    throw "Tourney with odd number of players";
 
-  var matches = pairs(players);
-  return [matches].concat(tourney(winners(matches)));
+  var n = Math.pow(2, Math.floor(Math.log(players.length)/Math.LN2));
+  var m = players.length - n;
+  if (m > 0) {
+    var [now, up] = split(players, [m * 2]);
+    var elim = pairs(now);
+    var byes = up.map(p => match.new(p,p));
+    var matches = elim.concat(byes);
+    return [matches].concat(tourney(winners(matches)));
+  } else {
+    var matches = pairs(players);
+    return [matches].concat(tourney(winners(matches)));
+  }
 }
 
 function losersBracket(tourney, prevWinners) {
@@ -258,6 +266,7 @@ function mix(groups) {
 
   return heads.concat(mix(tails));
 }
+
 function last(matches) {
   return matches[matches.length - 1];
 }
