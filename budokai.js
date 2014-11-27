@@ -532,7 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   var $shuffle = document.querySelector('#shuffle-players');
   $shuffle.addEventListener('click', () => {
-    var $names = $players.querySelectorAll('input');
+    var $names = [].filter.call($players.querySelectorAll('input'),
+                                $p => !$p.classList.contains('off'));
     var names = [].map.call($names, $i => $i.value);
     names = shuffle(names);
     [].forEach.call($names, ($n,i) => { $n.value = names[i]; });
