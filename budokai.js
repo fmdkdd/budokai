@@ -280,15 +280,6 @@ function shuffle(array) {
 // View
 
 var render = {
-  players_list : ["Abel", "Adon", "Akuma", "Balrog", "Blanka", "C Viper",
-                  "Cammy", "Chun Li",  "Cody", "Dan", "Decapre", "Dee Jay",
-                  "Dhalsim", "Dudley", "E Honda", "El Fuerte", "Elena",
-                  "Evil Ryu", "Fei Long", "Gen", "Gouken", "Guile", "Guy",
-                  "Hakan", "Hugo", "Ibuki", "Juri", "Ken", "M Bison",
-                  "Makoto", "Oni", "Poison", "Rolento", "Rose", "Rufus",
-                  "Ryu", "Sagat", "Sakura", "Seth", "T Hawk", "Vega",
-                  "Yang", "Yun", "Zangief"],
-
   events: function(es) {
     var $f = document.createDocumentFragment();
     es.forEach(e => { $f.appendChild(render.event(e)); });
@@ -439,24 +430,14 @@ var render = {
   },
 
   chars_list: function(p, p_char) {
-    var $p = document.createElement('select');
-
+    var $p = document.createElement('input');
+    $p.classList.add('char');
+    $p.type = 'text';
+    $p.placeholder = 'Dan';
+    $p.setAttribute('list', 'all-chars');
     var ch = p_char || last_char(p);
-
-    if (ch == null) {
-      var $default = document.createElement('option');
-      $default.setAttribute('disabled', true);
-      $default.setAttribute('selected', true);
-      $p.options.add($default);
-    }
-
-    render.players_list.forEach(name => {
-      var $option = document.createElement('option');
-      $option.text = name;
-      if (name === ch)
-        $option.setAttribute('selected', true);
-      $p.options.add($option);
-    });
+    if (ch != null)
+      $p.value = ch;
 
     return $p;
   },
@@ -534,8 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $players.addEventListener('input', () => { v.refresh(); });
 
-  // XXX: should use DOM-abstract events to trigger a refresh
-  $list.addEventListener('click', event => {
+  $list.addEventListener('change', event => {
     // Need the setTimeout to let the event bubble and be caught by
     // other listeners before recreating the view
     setTimeout(() => { v.refresh(); } , 0);
