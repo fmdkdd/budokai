@@ -394,6 +394,8 @@ var render = {
   match: function(m) {
     var $f = document.createElement('li');
     $f.classList.add('match');
+    if (m.p1 === m.p2)
+      $f.classList.add('bye');
 
     var $player1 = document.createElement('div');
     $player1.classList.add('player1');
@@ -409,21 +411,19 @@ var render = {
     });
     $p1.appendChild($char_p1);
 
-    if (m.p1 !== m.p2) {
-      var $player2 = document.createElement('div');
-      $player2.classList.add('player2');
-      $f.appendChild($player2);
+    var $player2 = document.createElement('div');
+    $player2.classList.add('player2');
+    $f.appendChild($player2);
 
-      var $p2 = render.player(m.p2, m);
-      $player2.appendChild($p2);
+    var $p2 = render.player(m.p2, m);
+    $player2.appendChild($p2);
 
-      var $char_p2 = render.chars_list(m.p2, m.p2_char);
-      $char_p2.addEventListener('change', (event) => {
-        m.p2_char = event.target.value;
-        set_last_char(m.p2, m.p2_char);
-      });
-      $p2.appendChild($char_p2);
-    }
+    var $char_p2 = render.chars_list(m.p2, m.p2_char);
+    $char_p2.addEventListener('change', (event) => {
+      m.p2_char = event.target.value;
+      set_last_char(m.p2, m.p2_char);
+    });
+    $p2.appendChild($char_p2);
 
     var $reset = document.createElement('button');
     $reset.classList.add('reset-match');

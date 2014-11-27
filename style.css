@@ -123,6 +123,8 @@ section h2 {
   margin: .5rem 0;
 }
 
+.tourney .bye {visibility: hidden}
+
 .tourney .winner:before {
   content: '勝者: ';
   color: #ca1;
