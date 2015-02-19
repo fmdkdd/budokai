@@ -489,6 +489,9 @@ var view = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  var save = (k,v) => localStorage.setItem(k,v);
+  var retrieve = k => localStorage.getItem(k);
+
   var $players = document.querySelector('#player-list');
   var $list = document.querySelector('#match-list');
   var $n = document.querySelector('#n-players');
@@ -502,8 +505,9 @@ document.addEventListener('DOMContentLoaded', () => {
     range(n).forEach(i => {
       if ($players.childNodes[i] == null) {
         var $name = document.createElement('input');
+        $name.id = `player-${i}`;
         $name.setAttribute('type', 'text');
-        $name.value = 'P' + i;
+        $name.value = retrieve($name.id) || 'P' + i;
         $players.appendChild($name);
       } else {
         $players.childNodes[i].classList.remove('off');
@@ -522,7 +526,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $n.dispatchEvent(new Event('input'));
 
-  $players.addEventListener('input', () => { v.refresh(); });
+  $players.addEventListener('input', (event) => {
+    save(event.target.id, event.target.value);
+    v.refresh();
+  });
 
   $list.addEventListener('change', event => {
     // Need the setTimeout to let the event bubble and be caught by
