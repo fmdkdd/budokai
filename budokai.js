@@ -105,7 +105,10 @@ function last_char(player) {
 function set_last_char(player, last_char) {
   if (player == null) return;
   if (typeof player === 'function') return set_last_char(player(), last_char);
-  if (typeof player === 'object') return player.last_char = last_char;
+  if (typeof player === 'object') {
+    save(name(player), last_char);
+    player.last_char = last_char;
+  }
 }
 
 
@@ -444,7 +447,7 @@ var render = {
     $p.type = 'text';
     $p.placeholder = 'Dan';
     $p.setAttribute('list', 'all-chars');
-    var ch = p_char || last_char(p);
+    var ch = p_char || last_char(p) || retrieve(name(p));
     if (ch != null)
       $p.value = ch;
 
@@ -489,9 +492,6 @@ var view = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  var save = (k,v) => localStorage.setItem(k,v);
-  var retrieve = k => localStorage.getItem(k);
-
   var $players = document.querySelector('#player-list');
   var $list = document.querySelector('#match-list');
   var $n = document.querySelector('#n-players');
@@ -547,3 +547,6 @@ document.addEventListener('DOMContentLoaded', () => {
     v.refresh();
   });
 });
+
+var save = (k,v) => localStorage.setItem(k,v);
+var retrieve = k => localStorage.getItem(k);
