@@ -14,7 +14,7 @@ function events(players) {
   var n = players.length;
 
   if (n === 3) {
-    return [league(players)];
+    return [shuffle(league(players))];
   }
 
   else if (n === 4 || n === 8)
@@ -22,15 +22,15 @@ function events(players) {
 
   else if (n === 5) {
     var [g1, g2] = split(players, [3,2]);
-    var l = league(g1);
+    var l = shuffle(league(g1));
     var w = best(2, l);
     return [l, tourney(mix([w, g2]))];
   }
 
   else if (n === 6) {
     var [g1, g2] = split(players, [3,3]);
-    var l1 = league(g1);
-    var l2 = league(g2);
+    var l1 = shuffle(league(g1));
+    var l2 = shuffle(league(g2));
     var w1 = best(2, l1);
     var w2 = best(2, l2);
     return [l1, l2, tourney(mix([w1, w2]))];
@@ -42,14 +42,14 @@ function events(players) {
 
   else if (n === 9) {
     var [g1, g2] = split(players, [3,6]);
-    var l = league(g1);
+    var l = shuffle(league(g1));
     var w = best(2, l);
     return [l, tourney(mix([w, g2]))];
   }
 
   else if (n === 10) {
     var [g1, g2] = split(players, [4,6]);
-    var l = league(g1);
+    var l = shuffle(league(g1));
     var w = best(2, l);
     return [l, tourney(mix([w, g2]))];
   }
