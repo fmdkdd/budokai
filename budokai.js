@@ -459,6 +459,7 @@ var render = {
     $f.classList.add('player-info');
 
     var $button = document.createElement('input');
+    $button.id = `radio-${genid()}`;
     $button.setAttribute('type', 'radio');
 
     $button.addEventListener('click', () => { m.winner = p; });
@@ -471,6 +472,7 @@ var render = {
     var $label = document.createElement('label');
     $label.classList.add('player-name');
     $label.textContent = name(p);
+    $label.setAttribute('for', $button.id);
     $f.appendChild($label);
 
     return $f;
@@ -550,3 +552,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 var save = (k,v) => localStorage.setItem(k,v);
 var retrieve = k => localStorage.getItem(k);
+var genid = (() => { var i = 0; return () => ++i })();
