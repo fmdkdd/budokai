@@ -506,14 +506,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     range(n).forEach(i => {
       if ($players.childNodes[i] == null) {
+        var $div = document.createElement('div');
+        $div.id = `player-${i}`;
+        $div.classList.add('name-container');
+
         var $name = document.createElement('input');
-        $name.id = `player-${i}`;
+        $name.classList.add('name');
         $name.setAttribute('type', 'text');
-        $name.value = retrieve($name.id) || 'P' + i;
-        $players.appendChild($name);
+        $name.value = retrieve($div.id) || 'P' + i;
+        $div.appendChild($name);
+
+        var $lock = document.createElement('input');
+        $lock.id = `lock-${i}`;
+        $lock.classList.add('lock');
+        $lock.setAttribute('type', 'checkbox');
+        $lock.addEventListener('click', () => { $name.classList.toggle('locked') });
+        $div.appendChild($lock);
+
+        var $label = document.createElement('label');
+        $label.setAttribute('for', $lock.id);
+        $label.innerHTML = '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
+        $div.appendChild($label);
+
+        $players.appendChild($div);
       } else {
         $players.childNodes[i].classList.remove('off');
-        var $name = $players.childNodes[i];
+        var $name = $players.querySelector(`#player-${i} .name`);
       }
       players.push({name: () => $name.value});
     });
@@ -529,8 +547,10 @@ document.addEventListener('DOMContentLoaded', () => {
   $n.dispatchEvent(new Event('input'));
 
   $players.addEventListener('input', (event) => {
-    save(event.target.id, event.target.value);
-    v.refresh();
+    if (event.target.classList.contains('name')) {
+      save(event.target.id, event.target.value);
+      v.refresh();
+    }
   });
 
   $list.addEventListener('change', event => {
@@ -541,8 +561,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   var $shuffle = document.querySelector('#shuffle-players');
   $shuffle.addEventListener('click', () => {
-    var $names = [].filter.call($players.querySelectorAll('input'),
-                                $p => !$p.classList.contains('off'));
+    var $names = [].filter.call($players.querySelectorAll('input.name'),
+                                $p => !$p.classList.contains('off')
+                                      && !$p.classList.contains('locked'));
     var names = [].map.call($names, $i => $i.value);
     names = shuffle(names);
     [].forEach.call($names, ($n,i) => { $n.value = names[i]; });
