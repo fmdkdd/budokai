@@ -522,7 +522,10 @@ document.addEventListener('DOMContentLoaded', () => {
         $lock.id = `lock-${i}`;
         $lock.classList.add('lock');
         $lock.setAttribute('type', 'checkbox');
-        $lock.addEventListener('click', () => { $name.classList.toggle('locked') });
+        $lock.addEventListener('click', () => {
+          $name.classList.toggle('locked');
+          $name.disabled = !$name.disabled;
+        });
         $div.appendChild($lock);
 
         var $label = document.createElement('label');
