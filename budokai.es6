@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $players.addEventListener('input', (event) => {
     if (event.target.classList.contains('name')) {
-      save(event.target.id, event.target.value);
+      save(event.target.parentNode.id, event.target.value);
       v.refresh();
     }
   });
