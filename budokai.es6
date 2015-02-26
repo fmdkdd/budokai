@@ -566,9 +566,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   var $shuffle = document.querySelector('#shuffle-players');
   $shuffle.addEventListener('click', () => {
-    var $names = [].filter.call($players.querySelectorAll('input.name'),
-                                $p => !$p.classList.contains('off')
-                                      && !$p.classList.contains('locked'));
+    var $names = [].filter.call(
+      $players.querySelectorAll('input.name'),
+      $p => !$p.parentNode.classList.contains('off')
+         && !$p.classList.contains('locked'));
     var names = [].map.call($names, $i => $i.value);
     names = shuffle(names);
     [].forEach.call($names, ($n,i) => { $n.value = names[i]; });
