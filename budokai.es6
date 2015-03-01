@@ -531,7 +531,7 @@ var serialize = {
 
     var m = {
       version: 1,
-      date: (new Date()).toDateString()
+      date: (new Date()).toISOString().split('T')[0]
       ,events: ev
     };
 
