@@ -413,7 +413,7 @@ var render = {
       set_last_char(m.p1, m.p1_char);
     });
     $p1.appendChild($char_p1);
-    $p1.addEventListener('click', (event) => { m.p1_char = $char_p1.value });
+    $p1.addEventListener('click', saveChars);
 
     var $player2 = document.createElement('div');
     $player2.classList.add('player2');
@@ -428,7 +428,7 @@ var render = {
       set_last_char(m.p2, m.p2_char);
     });
     $p2.appendChild($char_p2);
-    $p2.addEventListener('click', (event) => { m.p2_char = $char_p2.value });
+    $p2.addEventListener('click', saveChars);
 
     var $reset = document.createElement('button');
     $reset.classList.add('reset-match');
@@ -441,6 +441,11 @@ var render = {
     $f.appendChild($reset);
 
     return $f;
+
+    function saveChars() {
+      m.p1_char = $char_p1.value;
+      m.p2_char = $char_p2.value;
+    }
   },
 
   chars_list: function(p, p_char) {
