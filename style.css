@@ -154,3 +154,18 @@ section h2 {
   content: '勝者: ';
   color: #ca1;
 }
+
+/* Budokai data */
+
+.budokai-data {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+}
+
+.budokai-data .data {
+  margin-bottom: 0.5rem;
+  font-size: 0.5rem;
+  color: #aaa;
+  word-wrap: break-word;
+  max-width: 20rem;
+}

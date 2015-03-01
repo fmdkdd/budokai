@@ -479,6 +479,25 @@ var render = {
 
     return $f;
   },
+
+  saveLink: function(events) {
+    var $div = document.createElement('div');
+    $div.classList.add('budokai-data');
+
+    var link = encode(serialize.all(events));
+
+    var $p = document.createElement('p');
+    $p.classList.add('data');
+    $p.textContent = link;
+    $div.appendChild($p);
+
+    var $a = document.createElement('a');
+    $a.setAttribute('href', encodeURI(`mailto:?subject=[Budokai] Save me&body=${link}`));
+    $a.textContent = 'post';
+    $div.appendChild($a);
+
+    return $div;
+  },
 };
 
 var view = {
@@ -492,8 +511,55 @@ var view = {
   refresh: function() {
     this.$root.innerHTML = '';
     this.$root.appendChild(render.events(this.events));
+    this.$root.appendChild(render.saveLink(this.events));
   },
 };
+
+var serialize = {
+  all(events) {
+    var ev = [];
+
+    events.forEach(e => {
+      if (isLeague(e)) ev.push(serialize.league(e))
+      else ev.push(serialize.tourney(e))
+    });
+
+    var m = {
+      version: 1,
+      date: (new Date()).toDateString()
+      ,events: ev
+    };
+
+    return JSON.stringify(m);
+  },
+
+  league(l) {
+    return l.map(m => serialize.match(m));
+  },
+
+  tourney(t) {
+    return t.map(bracket => bracket.map(m => serialize.match(m)));
+  },
+
+  match(m) {
+    var winner;
+    if (m.p1 === m.winner())
+      winner = 'p1';
+    else if (m.winner() === m.p2)
+      winner = 'p2';
+
+    return {
+      p1: {name: name(m.p1),
+           char: m.p1_char},
+      p2: {name: name(m.p2),
+           char: m.p2_char},
+      winner,
+    };
+  },
+};
+
+var encode = s => btoa(encodeURI(s))
+var decode = s => decodeURI(atob(s))
 
 document.addEventListener('DOMContentLoaded', () => {
   var $players = document.querySelector('#player-list');
