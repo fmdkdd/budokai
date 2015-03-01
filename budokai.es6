@@ -543,7 +543,12 @@ var serialize = {
   },
 
   tourney(t) {
-    return t.map(bracket => bracket.map(m => serialize.match(m)));
+    var matches = [];
+    t.forEach(bracket => bracket.forEach(m => {
+      if (m.p1 !== m.p2)
+      matches.push(serialize.match(m));
+    }));
+    return matches;
   },
 
   match(m) {
