@@ -169,3 +169,46 @@ section h2 {
   word-wrap: break-word;
   max-width: 20rem;
 }
+
+/* Stats */
+
+#all-matches {
+  margin-top: 3rem;
+  margin-left: 2rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13pt;
+  width: 26rem;
+}
+
+#all-matches thead td {
+  transform: rotate(-60deg) translate(50%,0);
+}
+
+#all-matches .name {
+  transform: translate(-2rem);
+}
+
+.inactive {
+  opacity: 0.2;
+}
+
+.square {
+  text-align: center;
+}
+
+/* .q0 { background-color: #8f100d; color: white; } */
+/* .q1 { background-color: #b52a26; color: white; } */
+/* .q2 { background-color: #f57773; color: white; } */
+/* .q3 { background-color: #ffa5a3; color: white; } */
+/* .q4 { background-color: rgb(247,251,247); color: #666; } */
+/* .q5 { background-color: #77b6b9; color: white; } */
+/* .q6 { background-color: #469194; color: white; } */
+/* .q7 { background-color: #18696d; color: white; } */
+/* .q8 { background-color: #085357; color: white; } */
+
+.q0 { background-color: rgb(247,251,247); color: #666; }
+.q1 { background-color: #77b6b9; color: white; }
+.q2 { background-color: #469194; color: white; }
+.q3 { background-color: #18696d; color: white; }
+.q4 { background-color: #085357; color: white; }
