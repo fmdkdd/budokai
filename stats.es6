@@ -88,7 +88,7 @@ function computeMatchesMatrix(matches, names) {
   for (var i = 0; i < l; ++i) {
     matrix[i] = [];
     for (var j = 0; j < l; ++j) {
-      matrix[i][j] = 0;
+      matrix[i][j] = i === j ? '' : 0;
     }
   }
 
