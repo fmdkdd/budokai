@@ -92,15 +92,14 @@ function computeMatchesMatrix(matches, names) {
     }
   }
 
+  // Count victories
   matches.forEach(m => {
     var p1 = names.indexOf(m.p1.name);
     var p2 = names.indexOf(m.p2.name);
 
     if (m.winner === 'p1') {
       matrix[p1][p2] += 1;
-//      matrix[p2][p1] -= 1;
     } else {
-//      matrix[p1][p2] -= 1;
       matrix[p2][p1] += 1;
     }
   });
