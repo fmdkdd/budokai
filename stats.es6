@@ -104,5 +104,18 @@ function computeMatchesMatrix(matches, names) {
     }
   });
 
+  // Normalize victories
+  for (var i = 0; i < l; ++i) {
+    for (var j = 0; j < i; ++j) {
+      var totalMatches = matrix[i][j] + matrix[j][i];
+      if (totalMatches > 10) {
+        matrix[i][j] *= 10 / totalMatches;
+        matrix[j][i] *= 10 / totalMatches;
+        matrix[i][j] = Math.round(matrix[i][j] * 10) / 10;
+        matrix[j][i] = Math.round(matrix[j][i] * 10) / 10;
+      }
+    }
+  }
+
   return matrix;
 }
