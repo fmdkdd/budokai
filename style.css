@@ -193,6 +193,8 @@ section h2 {
   opacity: 0.2;
 }
 
+.active { color: #e67e22 }
+
 .square {
   text-align: center;
 }

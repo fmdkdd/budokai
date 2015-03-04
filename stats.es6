@@ -73,6 +73,11 @@ function refreshMatches(names, matrix) {
                  || (this.getAttribute('data-x') === target.getAttribute('data-y')
                      && this.getAttribute('data-y') === target.getAttribute('data-x')))
       });
+
+    var x = parseInt(this.getAttribute('data-x'), 10);
+    chart.selectAll('thead td').classed('active', (d, i) => x == i - 1);
+    var y = parseInt(this.getAttribute('data-y'), 10);
+    chart.selectAll('.name').classed('active', (d, i) => y == i);
   }
 
   function unhighlightLabels() {
