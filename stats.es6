@@ -10,7 +10,7 @@ function init() {
       matches.push(m);
     });
   }));
-  var names = Object.getOwnPropertyNames(namesDict);
+  var names = Object.getOwnPropertyNames(namesDict).sort();
 
   var matrix = computeMatchesMatrix(matches, names);
   refreshMatches(names, matrix);
