@@ -1,5 +1,9 @@
 window.stats = JSON.parse(`[
 
+{"version":1,"date":"2015-04-15","events":[[{"p1":{"name":"Florent","char":"Rose"},"p2":{"name":"Walid","char":"Blanka"},"winner":"p1"},{"p1":{"name":"John","char":"Ryu"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p1"},{"p1":{"name":"Zied","char":"Ibuki"},"p2":{"name":"Ignacio","char":"Oni"},"winner":"p2"},{"p1":{"name":"Florent","char":"Yang"},"p2":{"name":"John","char":"Oni"},"winner":"p1"},{"p1":{"name":"Ignacio","char":"Oni"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p2"},{"p1":{"name":"Florent","char":"Blanka"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p1"}]]}
+
+,
+
 {"version":1,"date":"2015-04-01","events":[[{"p1":{"name":"Medhi","char":"Ryu"},"p2":{"name":"Ignacio","char":"Oni"},"winner":"p2"},{"p1":{"name":"Medhi","char":"Ryu"},"p2":{"name":"Ignacio","char":"Oni"},"winner":"p2"},{"p1":{"name":"Ronan","char":"Decapre"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p1"},{"p1":{"name":"Ronan","char":"Decapre"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p1"},{"p1":{"name":"Walid","char":"Rufus Ω"},"p2":{"name":"Florent","char":"Guy"},"winner":"p2"},{"p1":{"name":"Walid","char":"Rufus Ω"},"p2":{"name":"Florent","char":"Guy"},"winner":"p2"},{"p1":{"name":"Ignacio","char":"Oni"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p2"},{"p1":{"name":"Ignacio","char":"Oni"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p1"},{"p1":{"name":"Ignacio","char":"Oni"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p2"},{"p1":{"name":"Florent","char":"Guy"},"p2":{"name":"John","char":"Blanka"},"winner":"p2"},{"p1":{"name":"Florent","char":"Guy"},"p2":{"name":"John","char":"Blanka"},"winner":"p2"},{"p1":{"name":"Ronan","char":"Decapre"},"p2":{"name":"John","char":"Blanka"},"winner":"p1"},{"p1":{"name":"Ronan","char":"Decapre"},"p2":{"name":"John","char":"Ken"},"winner":"p2"},{"p1":{"name":"Ronan","char":"E Honda"},"p2":{"name":"John","char":"Ken"},"winner":"p1"}]]}
 
 ,
