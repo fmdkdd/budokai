@@ -1,5 +1,9 @@
 window.stats = JSON.parse(`[
 
+{"version":1,"date":"2015-04-22","events":[[{"p1":{"name":"Florent","char":"Fei Long"},"p2":{"name":"Ignacio","char":"Akuma"},"winner":"p1"},{"p1":{"name":"Florent","char":"Cammy"},"p2":{"name":"John","char":"Ryu"},"winner":"p1"},{"p1":{"name":"Florent","char":"Zangief"},"p2":{"name":"Walid","char":"Fei Long"},"winner":"p1"},{"p1":{"name":"Zied","char":"Balrog"},"p2":{"name":"Ignacio","char":"Oni"},"winner":"p2"},{"p1":{"name":"Zied","char":"Ken"},"p2":{"name":"John","char":"Ryu"},"winner":"p2"},{"p1":{"name":"Zied","char":"Ibuki"},"p2":{"name":"Walid","char":"Fei Long"},"winner":"p1"},{"p1":{"name":"Zied","char":"Hakan"},"p2":{"name":"Florent","char":"Dan"},"winner":"p2"},{"p1":{"name":"Ignacio","char":"Evil Ryu"},"p2":{"name":"Walid","char":"Fei Long"},"winner":"p2"},{"p1":{"name":"Walid","char":"Fei Long"},"p2":{"name":"John","char":"Ken"},"winner":"p2"},{"p1":{"name":"John","char":"Ryu"},"p2":{"name":"Ignacio","char":"Makoto"},"winner":"p1"},{"p1":{"name":"Florent","char":"Cammy"},"p2":{"name":"John","char":"Ken"},"winner":"p2"},{"p1":{"name":"Florent","char":"Poison"},"p2":{"name":"John","char":"Ken"},"winner":"p1"}]]}
+
+,
+
 {"version":1,"date":"2015-04-15","events":[[{"p1":{"name":"Florent","char":"Rose"},"p2":{"name":"Walid","char":"Blanka"},"winner":"p1"},{"p1":{"name":"John","char":"Ryu"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p1"},{"p1":{"name":"Zied","char":"Ibuki"},"p2":{"name":"Ignacio","char":"Oni"},"winner":"p2"},{"p1":{"name":"Florent","char":"Yang"},"p2":{"name":"John","char":"Oni"},"winner":"p1"},{"p1":{"name":"Ignacio","char":"Oni"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p2"},{"p1":{"name":"Florent","char":"Blanka"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p1"}]]}
 
 ,
