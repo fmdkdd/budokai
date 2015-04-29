@@ -10,8 +10,11 @@
 // TODO: different options (in number of matches) where it makes sense
 // TODO: losers bracket as an option
 
-function events(players) {
+function events(players, eventType) {
   var n = players.length;
+
+  if (eventType === 'league')
+    return [shuffle(league(players))];
 
   if (n === 3) {
     return [shuffle(league(players))];
@@ -575,11 +578,18 @@ document.addEventListener('DOMContentLoaded', () => {
   var $players = document.querySelector('#player-list');
   var $list = document.querySelector('#match-list');
   var $n = document.querySelector('#n-players');
+  var $isTourney = document.querySelector('#event-type-tourney');
+  var $isLeague = document.querySelector('#event-type-league');
 
   var v = view.new($list);
 
-  $n.addEventListener('input', () => {
+  $n.addEventListener('input', refreshEvents);
+  $isTourney.addEventListener('input', refreshEvents);
+  $isLeague.addEventListener('change', refreshEvents);
+
+  function refreshEvents() {
     var n = parseInt($n.value, 10);
+    var eventType = $isTourney.checked ? 'tourney' : 'league';
     var players = [];
 
     range(n).forEach(i => {
@@ -621,9 +631,9 @@ document.addEventListener('DOMContentLoaded', () => {
       $players.childNodes[i].classList.add('off');
     });
 
-    v.events = events(players);
+    v.events = events(players, eventType);
     v.refresh();
-  });
+  }
 
   $n.dispatchEvent(new Event('input'));
 

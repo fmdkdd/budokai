@@ -9,7 +9,15 @@
     <script src="budokai.js"></script>
   </head>
   <body>
-    <input id="n-players" type="range" min="3" max="16" autofocus>
+    <div>
+      <label for="n-players">Number of players</label>
+      <input id="n-players" type="range" min="3" max="16" autofocus>
+    </div>
+
+    <input id="event-type-tourney" type="radio" name="event-type" checked>
+    <label for="event-type-tourney">Tourney</label>
+    <input id="event-type-league" type="radio" name="event-type">
+    <label for="event-type-league">League</label>
 
     <datalist id="all-chars">
       <option>Abel</option>
