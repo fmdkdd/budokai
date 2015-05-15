@@ -500,7 +500,8 @@ var render = {
     $div.appendChild($p);
 
     var $a = document.createElement('a');
-    $a.setAttribute('href', encodeURI(`mailto:?subject=[Budokai] Save me&body=${link}`));
+    $a.setAttribute('href',
+                    encodeURI(`mailto:?subject=[Budokai] Save me&body=${link}`));
     $a.textContent = 'post';
     $div.appendChild($a);
 
@@ -616,7 +617,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         var $label = document.createElement('label');
         $label.setAttribute('for', $lock.id);
-        $label.innerHTML = '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
+        $label.innerHTML =
+          '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
         $div.appendChild($label);
 
         $players.appendChild($div);
