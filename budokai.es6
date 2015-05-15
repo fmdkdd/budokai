@@ -14,7 +14,7 @@ function events(players, eventType) {
   var n = players.length;
 
   if (eventType === 'league')
-    return [shuffle(league(players))];
+    return [leagueFair(players)];
 
   if (n === 3) {
     return [shuffle(league(players))];
@@ -52,7 +52,7 @@ function events(players, eventType) {
 
   else if (n === 10) {
     var [g1, g2] = split(players, [4,6]);
-    var l = shuffle(league(g1));
+    var l = leagueFair(g1);
     var w = best(2, l);
     return [l, tourney(mix([w, g2]))];
   }
@@ -189,6 +189,55 @@ function league(players) {
 function isLeague(event) {
   // If it contains matches at first level, it's a league
   return !!event[0].p1;
+}
+
+// Return the list of matches of a league between the players, with a fair
+// distribution of matches (round-robin).
+function leagueFair(players) {
+  var n = players.length;
+  var m = n * (n - 1) / 2;               // number of matches
+  var matchups = initArray(n, () => []); // Whether two players already met
+  var haveMet = (p1, p2) => matchups[p1][p2] === true;
+  var numMatches = p => matchups[p].filter(m => m != null).length
+  var bins = initArray(n, () => []);     // Sort players by number of matches
+                                         // played
+  var matches = [];                      // The list of matches to return
+
+  bins[0] = range(n-1, 0);
+
+  var p1, p2;
+  while (m > 0) {
+    p1 = first();
+    p2 = first(p => !haveMet(p1, p))
+    matches.push(match.new(players[p1], players[p2]));
+    matchups[p1][p2] = matchups[p2][p1] = true;
+    bins[numMatches(p1)].push(p1);
+    bins[numMatches(p2)].push(p2);
+    --m;
+  }
+
+  return matches;
+
+  // Remove and return the first element in bins that matches the predicate,
+  // going through the bins in increasing order of number of matches played.
+  function first(pred) {
+    pred = pred || (() => true);
+    for (var bi = 0; bi < bins.length; ++bi) {
+      var b = bins[bi];
+      for (var i = 0; i < b.length; ++i) {
+        if (pred(b[i])) {
+          return b.splice(i, 1)[0];
+        }
+      }
+    }
+    return undefined;
+  }
+}
+
+function initArray(length, initFunction) {
+  var a = new Array(length);
+  while (length-- > 0) a[length] = initFunction(length);
+  return a;
 }
 
 // Return a list of levels, where each level is a list of matches
