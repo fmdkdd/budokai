@@ -638,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var v = view.new($list);
 
   $n.addEventListener('input', refreshEvents);
-  $isTourney.addEventListener('input', refreshEvents);
+  $isTourney.addEventListener('change', refreshEvents);
   $isLeague.addEventListener('change', refreshEvents);
 
   function refreshEvents() {
