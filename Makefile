@@ -1,4 +1,4 @@
-BABEL_OPTS=--source-maps-inline --whitelist es6.destructuring,es6.properties.shorthand,es6.arrowFunctions,es6.spread,es6.templateLiterals
+BABEL_OPTS=--sourceMaps=inline
 
 .PHONY: go all clean
 

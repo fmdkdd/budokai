@@ -14,7 +14,7 @@ function events(players, eventType) {
   var n = players.length;
 
   if (eventType === 'league')
-    return [shuffle(league(players))];
+    return [leagueFair(players)];
 
   if (n === 3) {
     return [shuffle(league(players))];
@@ -52,7 +52,7 @@ function events(players, eventType) {
 
   else if (n === 10) {
     var [g1, g2] = split(players, [4,6]);
-    var l = shuffle(league(g1));
+    var l = leagueFair(g1);
     var w = best(2, l);
     return [l, tourney(mix([w, g2]))];
   }
@@ -128,7 +128,7 @@ function losers(matches) {
 // function for each match.  The scoring function takes a player and
 // match, and returns the player's score as a number.
 function best(n, matches, scoring) {
-  return range(n-1, 0).map(i => bestNth(i));
+  return range(0, n-1).map(i => bestNth(i));
 
   // XXX: sorting and computing the scores each time is far from
   // optimal, but we are dealing with very small numbers here.
@@ -189,6 +189,55 @@ function league(players) {
 function isLeague(event) {
   // If it contains matches at first level, it's a league
   return !!event[0].p1;
+}
+
+// Return the list of matches of a league between the players, with a fair
+// distribution of matches (round-robin).
+function leagueFair(players) {
+  var n = players.length;
+  var m = n * (n - 1) / 2;               // number of matches
+  var matchups = initArray(n, () => []); // Whether two players already met
+  var haveMet = (p1, p2) => matchups[p1][p2] === true;
+  var numMatches = p => matchups[p].filter(m => m != null).length
+  var bins = initArray(n, () => []);     // Sort players by number of matches
+                                         // played
+  var matches = [];                      // The list of matches to return
+
+  bins[0] = range(0, n-1);
+
+  var p1, p2;
+  while (m > 0) {
+    p1 = first();
+    p2 = first(p => !haveMet(p1, p))
+    matches.push(match.new(players[p1], players[p2]));
+    matchups[p1][p2] = matchups[p2][p1] = true;
+    bins[numMatches(p1)].push(p1);
+    bins[numMatches(p2)].push(p2);
+    --m;
+  }
+
+  return matches;
+
+  // Remove and return the first element in bins that matches the predicate,
+  // going through the bins in increasing order of number of matches played.
+  function first(pred) {
+    pred = pred || (() => true);
+    for (var bi = 0; bi < bins.length; ++bi) {
+      var b = bins[bi];
+      for (var i = 0; i < b.length; ++i) {
+        if (pred(b[i])) {
+          return b.splice(i, 1)[0];
+        }
+      }
+    }
+    return undefined;
+  }
+}
+
+function initArray(length, initFunction) {
+  var a = new Array(length);
+  while (length-- > 0) a[length] = initFunction(length);
+  return a;
 }
 
 // Return a list of levels, where each level is a list of matches
@@ -254,11 +303,15 @@ function split(players, groups) {
   return [hd].concat(split(tl, g));
 }
 
-// Return [start, ..., end], where start defaults to 1
-function range(end, start) {
-  if (start == null) start = 1;
+// range(start, end) return [start, ..., end].
+// range(end) return [1, ..., end].
+function range(start, end) {
+  if (end == null) {
+    end = start;
+    start = 1;
+  }
   if (end < start) return [];
-  else return range(end - 1, start).concat(end);
+  else return range(start, end - 1).concat(end);
 }
 
 // Mix players out of elimination rounds as to not meet again in the
@@ -500,7 +553,8 @@ var render = {
     $div.appendChild($p);
 
     var $a = document.createElement('a');
-    $a.setAttribute('href', encodeURI(`mailto:?subject=[Budokai] Save me&body=${link}`));
+    $a.setAttribute('href',
+                    encodeURI(`mailto:?subject=[Budokai] Save me&body=${link}`));
     $a.textContent = 'post';
     $div.appendChild($a);
 
@@ -584,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var v = view.new($list);
 
   $n.addEventListener('input', refreshEvents);
-  $isTourney.addEventListener('input', refreshEvents);
+  $isTourney.addEventListener('change', refreshEvents);
   $isLeague.addEventListener('change', refreshEvents);
 
   function refreshEvents() {
@@ -616,7 +670,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         var $label = document.createElement('label');
         $label.setAttribute('for', $lock.id);
-        $label.innerHTML = '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
+        $label.innerHTML =
+          '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
         $div.appendChild($label);
 
         $players.appendChild($div);
@@ -627,7 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
       players.push({name: () => $name.value});
     });
 
-    range($players.childNodes.length-1, n+1).forEach(i => {
+    range(n+1, $players.childNodes.length-1).forEach(i => {
       $players.childNodes[i].classList.add('off');
     });
 
