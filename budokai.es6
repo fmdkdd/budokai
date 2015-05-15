@@ -128,7 +128,7 @@ function losers(matches) {
 // function for each match.  The scoring function takes a player and
 // match, and returns the player's score as a number.
 function best(n, matches, scoring) {
-  return range(n-1, 0).map(i => bestNth(i));
+  return range(0, n-1).map(i => bestNth(i));
 
   // XXX: sorting and computing the scores each time is far from
   // optimal, but we are dealing with very small numbers here.
@@ -203,7 +203,7 @@ function leagueFair(players) {
                                          // played
   var matches = [];                      // The list of matches to return
 
-  bins[0] = range(n-1, 0);
+  bins[0] = range(0, n-1);
 
   var p1, p2;
   while (m > 0) {
@@ -303,11 +303,15 @@ function split(players, groups) {
   return [hd].concat(split(tl, g));
 }
 
-// Return [start, ..., end], where start defaults to 1
-function range(end, start) {
-  if (start == null) start = 1;
+// range(start, end) return [start, ..., end].
+// range(end) return [1, ..., end].
+function range(start, end) {
+  if (end == null) {
+    end = start;
+    start = 1;
+  }
   if (end < start) return [];
-  else return range(end - 1, start).concat(end);
+  else return range(start, end - 1).concat(end);
 }
 
 // Mix players out of elimination rounds as to not meet again in the
@@ -678,7 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
       players.push({name: () => $name.value});
     });
 
-    range($players.childNodes.length-1, n+1).forEach(i => {
+    range(n+1, $players.childNodes.length-1).forEach(i => {
       $players.childNodes[i].classList.add('off');
     });
 
