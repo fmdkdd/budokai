@@ -1,4 +1,4 @@
-BABEL_OPTS=--sourceMaps=inline
+BABEL_OPTS=--source-maps true
 
 .PHONY: go all clean
 
