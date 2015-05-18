@@ -1,5 +1,17 @@
 window.stats = JSON.parse(`[
 
+{"version":1,"date":"2015-05-13","events":[[{"p1":{"name":"Brice","char":"Ken"},"p2":{"name":"Alex","char":"Yun"},"winner":"p1"},{"p1":{"name":"Florent","char":"Yang"},"p2":{"name":"Walid","char":"Blanka"},"winner":"p2"},{"p1":{"name":"Alex","char":"Yun"},"p2":{"name":"Ronan","char":"Blanka"},"winner":"p2"},{"p1":{"name":"Alex","char":"Yun"},"p2":{"name":"Florent","char":"Gen"},"winner":"p2"},{"p1":{"name":"Florent","char":"Gouken"},"p2":{"name":"Ronan","char":"Balrog"},"winner":"p2"},{"p1":{"name":"Alex","char":"Yun"},"p2":{"name":"Walid","char":"Ken"},"winner":"p2"},{"p1":{"name":"Brice","char":"Akuma"},"p2":{"name":"Florent","char":"Dan"},"winner":"p2"},{"p1":{"name":"Walid","char":"Blanka"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p2"},{"p1":{"name":"Brice","char":"Balrog"},"p2":{"name":"Walid","char":"Blanka"},"winner":"p1"},{"p1":{"name":"Brice","char":"Blanka"},"p2":{"name":"Ronan","char":"Blanka"},"winner":"p1"},{"p1":{"name":"Brice","char":"Sakura"},"p2":{"name":"Ronan","char":"E Honda"},"winner":"p1"}]]}
+
+,
+
+{"version":1,"date":"2015-05-13","events":[[{"p1":{"name":"Florent","char":"T Hawk"},"p2":{"name":"Ronan","char":"E Honda"},"winner":"p1"},{"p1":{"name":"Brice","char":"Sakura"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p1"},{"p1":{"name":"Florent","char":"Ken"},"p2":{"name":"Brice","char":"Sakura"},"winner":"p2"}]]}
+
+,
+
+{"version":1,"date":"2015-05-13","events":[[{"p1":{"name":"Walid","char":"Ryu"},"p2":{"name":"Ronan","char":"E Honda"},"winner":"p2"},{"p1":{"name":"Brice","char":"Sakura"},"p2":{"name":"Ronan","char":"Decapre"},"winner":"p2"},{"p1":{"name":"Florent","char":"C Viper"},"p2":{"name":"Brice","char":"Sakura"},"winner":"p2"},{"p1":{"name":"Florent","char":"Guile"},"p2":{"name":"Alex","char":"Yun"},"winner":"p1"},{"p1":{"name":"Florent","char":"Guy"},"p2":{"name":"Walid","char":"Ryu"},"winner":"p1"},{"p1":{"name":"Alex","char":"Yun"},"p2":{"name":"Walid","char":"Ryu"},"winner":"p2"},{"p1":{"name":"Alex","char":"Yun"},"p2":{"name":"Brice","char":"Evil Ryu"},"winner":"p2"},{"p1":{"name":"Alex","char":"Yun"},"p2":{"name":"Ronan","char":"E Honda"},"winner":"p2"},{"p1":{"name":"Florent","char":"Cody"},"p2":{"name":"Ronan","char":"E Honda"},"winner":"p1"},{"p1":{"name":"Walid","char":"Ryu"},"p2":{"name":"Brice","char":"Sakura"},"winner":"p2"}]]}
+
+,
+
 {"version":1,"date":"2015-05-06","events":[[{"p1":{"name":"Ronan","char":"E Honda"},"p2":{"name":"Florent","char":"Zangief"},"winner":"p2"},{"p1":{"name":"Ronan","char":"Decapre"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p1"},{"p1":{"name":"Ronan","char":"Decapre"},"p2":{"name":"Walid","char":"Ryu"},"winner":"p2"},{"p1":{"name":"Florent","char":"Abel"},"p2":{"name":"Walid","char":"Ryu"},"winner":"p1"},{"p1":{"name":"Florent","char":"Sakura"},"p2":{"name":"Zied","char":"Ken Ω"},"winner":"p1"},{"p1":{"name":"Ronan","char":"E Honda"},"p2":{"name":"Zied","char":"Ken"},"winner":"p1"},{"p1":{"name":"Florent","char":"El Fuerte"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p2"},{"p1":{"name":"Walid","char":"Ryu"},"p2":{"name":"Paul","char":"C Viper"},"winner":"p1"},{"p1":{"name":"Walid","char":"Ryu"},"p2":{"name":"Zied","char":"Ryu"},"winner":"p1"},{"p1":{"name":"Paul","char":"C Viper"},"p2":{"name":"Zied","char":"Ibuki"},"winner":"p1"},{"p1":{"name":"Florent","char":"Juri"},"p2":{"name":"Walid","char":"Ryu"},"winner":"p1"}]]}
 
 ,
