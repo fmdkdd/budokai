@@ -288,19 +288,26 @@ function isLeague(event) {
 }
 
 // Return the list of matches of a league between the players, with a fair
-// distribution of matches (round-robin).
+// distribution of matches (round-robin).  Below 5 players, it's impossible to
+// avoid playing two matches in a row.  Above, this seems to work.
 function leagueFair(players) {
   var n = players.length;
   var m = n * (n - 1) / 2; // number of matches
   var matchups = initArray(n, function () {
     return [];
-  }); // Whether two players already met
+  }); // Whether two players already met, and
+  // which played home.
   var haveMet = function haveMet(p1, p2) {
-    return matchups[p1][p2] === true;
+    return matchups[p1][p2] != null;
   };
   var numMatches = function numMatches(p) {
     return matchups[p].filter(function (m) {
       return m != null;
+    }).length;
+  };
+  var homeMatches = function homeMatches(p) {
+    return matchups[p].filter(function (m) {
+      return m === 1;
     }).length;
   };
   var bins = initArray(n, function () {
@@ -317,8 +324,19 @@ function leagueFair(players) {
     p2 = first(function (p) {
       return !haveMet(p1, p);
     });
-    matches.push(match['new'](players[p1], players[p2]));
-    matchups[p1][p2] = matchups[p2][p1] = true;
+    // Give a chance for the other player to play home.
+    // XXX: this does *not* ensure a fair distribution of home/away matches for
+    // each player.  Does not work for N=5 at least, where a fair distribution
+    // exists.
+    if (homeMatches(p1) > homeMatches(p2)) {
+      ;
+      var _temp = [p2, p1];
+      p1 = _temp[0];
+      p2 = _temp[1];
+      _temp;
+    }matches.push(match['new'](players[p1], players[p2]));
+    matchups[p1][p2] = 1;
+    matchups[p2][p1] = -1;
     bins[numMatches(p1)].push(p1);
     bins[numMatches(p2)].push(p2);
     --m;
