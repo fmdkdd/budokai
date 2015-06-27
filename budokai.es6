@@ -673,10 +673,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let $lock = $div.querySelector('.lock')
         $lock.id = `lock-${i}`;
-        $lock.addEventListener('click', () => {
-          $name.classList.toggle('locked');
-          $name.disabled = !$name.disabled;
-        });
 
         let $label = $div.querySelector('label')
         $label.setAttribute('for', $lock.id);
@@ -698,6 +694,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   $n.dispatchEvent(new Event('input'));
+
+  $players.addEventListener('click', event => {
+    if (event.target.classList.contains('lock')) {
+      let $name = event.target.parentNode.querySelector('.name')
+      $name.classList.toggle('locked');
+      $name.disabled = !$name.disabled;
+    }
+  })
 
   $players.addEventListener('input', (event) => {
     if (event.target.classList.contains('name')) {
