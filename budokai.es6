@@ -638,6 +638,12 @@ var serialize = {
 var encode = s => btoa(encodeURI(s))
 var decode = s => decodeURI(atob(s))
 
+function fromTemplate(selector) {
+  let $template = document.querySelector(selector)
+  let $fragment = document.importNode($template.content, true)
+  return $fragment
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   var $players = document.querySelector('#player-list');
   var $list = document.querySelector('#match-list');
@@ -658,37 +664,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     range(n).forEach(i => {
       if ($players.childNodes[i] == null) {
-        var $div = document.createElement('div');
-        $div.id = `player-${i}`;
-        $div.classList.add('name-container');
+        let $fragment = fromTemplate('#template-player-name')
+        let $div = $fragment.querySelector('.name-container')
+        $div.id = `player-${i}`
 
-        var $name = document.createElement('input');
-        $name.classList.add('name');
-        $name.setAttribute('type', 'text');
+        let $name = $div.querySelector('.name')
         $name.value = retrieve($div.id) || 'P' + i;
-        $div.appendChild($name);
 
-        var $lock = document.createElement('input');
+        let $lock = $div.querySelector('.lock')
         $lock.id = `lock-${i}`;
-        $lock.classList.add('lock');
-        $lock.setAttribute('type', 'checkbox');
         $lock.addEventListener('click', () => {
           $name.classList.toggle('locked');
           $name.disabled = !$name.disabled;
         });
-        $div.appendChild($lock);
 
-        var $label = document.createElement('label');
+        let $label = $div.querySelector('label')
         $label.setAttribute('for', $lock.id);
-        $label.innerHTML =
-          '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
-        $div.appendChild($label);
 
         $players.appendChild($div);
       } else {
         $players.childNodes[i].classList.remove('off');
-        var $name = $players.querySelector(`#player-${i} .name`);
       }
+      let $name = $players.querySelector(`#player-${i} .name`);
       players.push({name: () => $name.value});
     });
 

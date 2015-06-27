@@ -22,6 +22,7 @@ section h2 {
   display: inline-block;
   margin-right: .5rem;
   margin-bottom: .2rem;
+  font-size: 0; /* To hide DOM text nodes between name and label */
 }
 
 #player-list .name {
@@ -36,6 +37,7 @@ section h2 {
 
 .lock {display: none}
 .lock + label {
+  font-size: 20px;
   vertical-align: middle;
   display: inline-block;
   box-sizing: padding-box;

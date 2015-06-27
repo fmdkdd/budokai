@@ -69,12 +69,22 @@
     <section id="players">
       <h2>Players</h2>
       <button id="shuffle-players">Shuffle</button>
-      <div id="player-list"> </div>
+      <div id="player-list"></div>
     </section>
 
     <section id="matches">
       <h2>Matches</h2>
       <div id="match-list"></div>
     </section>
+
+    <template id="template-player-name">
+      <div id="player-0" class="name-container">
+        <input type="text" class="name">
+        <input type="checkbox" id="lock-0" class="lock"><label for="lock-0">
+          <i class="fa fa-unlock"></i>
+          <i class="fa fa-lock"></i>
+        </label>
+      </div>
+    </template>
   </body>
 </html>
