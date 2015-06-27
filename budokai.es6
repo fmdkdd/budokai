@@ -461,94 +461,45 @@ var render = {
   },
 
   match: function(m) {
-    var $f = document.createElement('li');
-    $f.classList.add('match');
+    let $fragment = fromTemplate('#template-match')
+    let $m = $fragment.querySelector('.match')
+
     if (m.p1 === m.p2)
-      $f.classList.add('bye');
+      $m.classList.add('bye')
 
-    var $player1 = document.createElement('div');
-    $player1.classList.add('player1');
-    $f.appendChild($player1);
+    ;[m.p1, m.p2].forEach((p, i) => {
+      let player = i + 1
+      let $button = $m.querySelector(`#radio-${player}`)
+      $button.id = `radio-${genid()}`
+      $button.addEventListener('click', () => { m.winner = p })
+      if (p === m.winner())
+        $button.setAttribute('checked', true)
+      if (name(m.p1) == null || name(m.p2) == null)
+        $button.setAttribute('disabled', true)
 
-    var $p1 = render.player(m.p1, m);
-    $player1.appendChild($p1);
+      let $label = $m.querySelector(`.player${player} label`)
+      $label.textContent = name(p)
+      $label.setAttribute('for', $button.id)
 
-    var $char_p1 = render.chars_list(m.p1, m.p1_char);
-    $char_p1.addEventListener('change', (event) => {
-      m.p1_char = event.target.value;
-      set_last_char(m.p1, m.p1_char);
-    });
-    $p1.appendChild($char_p1);
-    $p1.addEventListener('click', saveChars);
+      let $char = $m.querySelector(`.player${player} .char`)
+      let charProp = `p{$player}_char`
+      let char = m[charProp] || last_char(p) || retrieve(name(p))
+      if (char != null)
+        $char.value = char
+      $char.addEventListener('change', event => {
+        m[charProp] = event.target.value
+        set_last_char(p, m[charProp])
+      })
+    })
 
-    var $player2 = document.createElement('div');
-    $player2.classList.add('player2');
-    $f.appendChild($player2);
+    $m.addEventListener('click', saveChars)
 
-    var $p2 = render.player(m.p2, m);
-    $player2.appendChild($p2);
+    return $m
 
-    var $char_p2 = render.chars_list(m.p2, m.p2_char);
-    $char_p2.addEventListener('change', (event) => {
-      m.p2_char = event.target.value;
-      set_last_char(m.p2, m.p2_char);
-    });
-    $p2.appendChild($char_p2);
-    $p2.addEventListener('click', saveChars);
-
-    var $reset = document.createElement('button');
-    $reset.classList.add('reset-match');
-    $reset.textContent = 'X';
-    $reset.addEventListener('click', () => {
-      m.winner = null;
-      m.p1_char = null;
-      m.p2_char = null;
-    });
-    $f.appendChild($reset);
-
-    return $f;
-
-    function saveChars() {
-      m.p1_char = $char_p1.value;
-      m.p2_char = $char_p2.value;
+    function saveChars(event) {
+      m.p1_char = $m.querySelector('.player1 .char').value
+      m.p2_char = $m.querySelector('.player2 .char').value
     }
-  },
-
-  chars_list: function(p, p_char) {
-    var $p = document.createElement('input');
-    $p.classList.add('char');
-    $p.type = 'text';
-    $p.placeholder = 'Dan';
-    $p.setAttribute('list', 'all-chars');
-    var ch = p_char || last_char(p) || retrieve(name(p));
-    if (ch != null)
-      $p.value = ch;
-
-    return $p;
-  },
-
-  player: function(p, m) {
-    var $f = document.createElement('div');
-    $f.classList.add('player-info');
-
-    var $button = document.createElement('input');
-    $button.id = `radio-${genid()}`;
-    $button.setAttribute('type', 'radio');
-
-    $button.addEventListener('click', () => { m.winner = p; });
-    if (p === m.winner())
-      $button.setAttribute('checked', true);
-    if (name(m.p1) == null || name(m.p2) == null)
-      $button.setAttribute('disabled', true);
-    $f.appendChild($button);
-
-    var $label = document.createElement('label');
-    $label.classList.add('player-name');
-    $label.textContent = name(p);
-    $label.setAttribute('for', $button.id);
-    $f.appendChild($label);
-
-    return $f;
   },
 
   saveLink: function(events) {
