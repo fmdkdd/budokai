@@ -93,7 +93,7 @@ section h2 {
   padding: .3rem 0;
 }
 
-.league-scores tr:first-child {
+.league-scores thead tr {
   border-bottom: 1px solid #666;
 }
 
