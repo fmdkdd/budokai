@@ -455,23 +455,16 @@ var render = {
   },
 
   saveLink: function(events) {
-    var $div = document.createElement('div');
-    $div.classList.add('budokai-data');
+    let $div = document.querySelector('.budokai-data')
 
-    var link = encode(serialize.all(events));
+    let link = encode(serialize.all(events))
+    let url = `mailto:?subject=[Budokai] Save me&body=${link}`
 
-    var $p = document.createElement('p');
-    $p.classList.add('data');
-    $p.textContent = link;
-    $div.appendChild($p);
+    let $p = $div.querySelector('.data')
+    $p.textContent = link
 
-    var $a = document.createElement('a');
-    $a.setAttribute('href',
-                    encodeURI(`mailto:?subject=[Budokai] Save me&body=${link}`));
-    $a.textContent = 'post';
-    $div.appendChild($a);
-
-    return $div;
+    let $a = $div.querySelector('a')
+    $a.setAttribute('href', encodeURI(url))
   },
 };
 
@@ -486,7 +479,7 @@ var view = {
   refresh: function() {
     this.$root.innerHTML = '';
     this.$root.appendChild(render.events(this.events));
-    this.$root.appendChild(render.saveLink(this.events));
+    render.saveLink(this.events)
   },
 };
 
