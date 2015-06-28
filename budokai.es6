@@ -370,54 +370,22 @@ var render = {
   },
 
   league: function(l) {
-    var $f = document.createElement('div');
-    $f.classList.add('league');
+    let $fragment = fromTemplate('#template-league')
+    let $l = $fragment.querySelector('.league')
 
-    var $header = document.createElement('h3');
-    $header.textContent = 'League';
-    $f.appendChild($header);
+    let $matches = $l.querySelector('.league-matches')
+    l.forEach(m => { $matches.appendChild(render.match(m)) })
 
-    var $div = document.createElement('div');
-    $div.classList.add('league-content');
-
-    var $matches = document.createElement('ol');
-    $matches.classList.add('league-matches');
-    l.forEach(m => { $matches.appendChild(render.match(m)); });
-    $div.appendChild($matches);
-
-    var $scores = document.createElement('table');
-    $scores.classList.add('league-scores');
-    var $scores_head = document.createElement('tr');
-
-    var $th_player = document.createElement('th');
-    $th_player.textContent = 'Player';
-    $scores_head.appendChild($th_player);
-
-    var $th_score = document.createElement('th');
-    $th_score.textContent = 'Score';
-    $scores_head.appendChild($th_score);
-
-    $scores.appendChild($scores_head);
-
+    let $scores = $l.querySelector('.league-scores')
     scores(l).forEach(([k,v]) => {
-      var $s = document.createElement('tr');
+      let $fragment = fromTemplate('#template-league-scores-row')
+      $fragment.children[0].children[0].textContent = name(k)
+      $fragment.children[0].children[1].textContent = v
 
-      var $name = document.createElement('td');
-      $name.textContent = name(k);
-      $s.appendChild($name);
+      $scores.appendChild($fragment)
+    })
 
-      var $points = document.createElement('td');
-      $points.textContent = v;
-      $s.appendChild($points);
-
-      $scores.appendChild($s);
-    });
-
-    $div.appendChild($scores);
-
-    $f.appendChild($div);
-
-    return $f;
+    return $l
   },
 
   tourney: function(t) {
