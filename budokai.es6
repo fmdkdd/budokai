@@ -389,43 +389,27 @@ var render = {
   },
 
   tourney: function(t) {
-    var $f = document.createElement('div');
-    $f.classList.add('tourney');
+    let $fragment = fromTemplate('#template-tourney')
+    let $t = $fragment.querySelector('.tourney')
 
-    var $header = document.createElement('h3');
-    $header.textContent = 'Tourney';
-    $f.appendChild($header);
+    let $matches = $t.querySelector('.tourney-matches')
+    let $winnerLevel = $matches.children[0]
+    t.forEach(l => {
+      $matches.insertBefore(render.level(l), $winnerLevel) })
 
-    var $t = document.createElement('div');
-    $t.classList.add('tourney-matches');
-    t.forEach(l => { $t.appendChild(render.level(l)); });
-    $f.appendChild($t);
+    let $winner = $winnerLevel.querySelector('.winner')
+    $winner.textContent = name(last(t)[0].winner)
 
-    var $winnerLevel = document.createElement('ol');
-    $winnerLevel.classList.add('level');
-
-    var $winner = document.createElement('span');
-    $winner.classList.add('player-name');
-    $winner.classList.add('winner');
-    $winner.textContent = name(last(t)[0].winner);
-    $winnerLevel.appendChild($winner);
-
-    $t.appendChild($winnerLevel);
-
-    return $f;
+    return $t
   },
 
   level: function(l) {
-    var $f = document.createDocumentFragment();
-    $f.appendChild(render.matches(l));
-    return $f;
-  },
+    let $fragment = fromTemplate('#template-tourney-level')
+    let $l = $fragment.children[0]
+    l.forEach(m => {
+      $l.appendChild(render.match(m)) })
 
-  matches: function(ms) {
-    var $f = document.createElement('ol');
-    $f.classList.add('level');
-    ms.forEach(m => { $f.appendChild(render.match(m)); });
-    return $f;
+    return $l
   },
 
   match: function(m) {
