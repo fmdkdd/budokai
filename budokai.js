@@ -10,11 +10,95 @@
 // TODO: different options (in number of matches) where it makes sense
 // TODO: losers bracket as an option
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Utils
+
 'use strict';
 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+var save = function save(k, v) {
+  return localStorage.setItem(k, v);
+};
+var retrieve = function retrieve(k) {
+  return localStorage.getItem(k);
+};
+var genid = (function () {
+  var i = 0;return function () {
+    return ++i;
+  };
+})();
+
+var encode = function encode(s) {
+  return btoa(encodeURI(s));
+};
+var decode = function decode(s) {
+  return decodeURI(atob(s));
+};
+
+function fromTemplate(selector) {
+  var $template = document.querySelector(selector);
+  var $fragment = document.importNode($template.content, true);
+  return $fragment;
+}
+
+function debounce(func) {
+  var wait = arguments[1] === undefined ? 0 : arguments[1];
+
+  var timeout = undefined;
+  return function () {
+    var _this = this;
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      return func.apply(_this, args);
+    }, wait);
+  };
+}
+
+var m2f = Function.prototype.bind.bind(Function.prototype.call);
+var forEach = m2f(Array.prototype.forEach);
+var map = m2f(Array.prototype.map);
+var filter = m2f(Array.prototype.filter);
+
+function initArray(length, initFunction) {
+  var a = new Array(length);
+  while (length-- > 0) a[length] = initFunction(length);
+  return a;
+}
+
+// range(start, end) return [start, ..., end].
+// range(end) return [1, ..., end].
+function range(start, end) {
+  if (end == null) {
+    end = start;
+    start = 1;
+  }
+  if (end < start) return [];else return range(start, end - 1).concat(end);
+}
+
+function shuffle(array) {
+  var r = function r() {
+    return Math.floor(Math.random() * array.length);
+  };
+
+  var shuffled = [];
+  for (var i = 0; i < array.length; i++) {
+    var j = r();
+    while (shuffled[j]) j = (j + 1) % array.length;
+    shuffled[j] = array[i];
+  }
+
+  return shuffled;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function events(players, eventType) {
   var n = players.length;
@@ -78,33 +162,36 @@ var match = Object.defineProperties({
   'new': function _new(p1, p2) {
     var m = {
       __proto__: this,
-      p1: p1, p2: p2 };
+      p1: p1, p2: p2
+    };
 
     // Match is a bye
     if (p1 === p2) m.winner = p1;
 
     return m;
-  } }, {
+  }
+
+}, {
   winner: {
-    get: function () {
-      var _this = this;
+    get: function get() {
+      var _this2 = this;
 
       return function () {
-        return _this.win;
+        return _this2.win;
       };
     },
-    set: function (p) {
+    set: function set(p) {
       if (p === 'p1') this.win = this.p1;else if (p === 'p2') this.win = this.p2;else if (p === this.p1 || p === this.p2 || p == null) this.win = p;else throw 'Winner should be p1, p2 or null';
     },
     configurable: true,
     enumerable: true
   },
   loser: {
-    get: function () {
-      var _this2 = this;
+    get: function get() {
+      var _this3 = this;
 
       return function () {
-        if (_this2.win == null) return undefined;else return _this2.win === _this2.p1 ? _this2.p2 : _this2.p1;
+        if (_this3.win == null) return undefined;else return _this3.win === _this3.p1 ? _this3.p2 : _this3.p1;
       };
     },
     configurable: true,
@@ -113,69 +200,25 @@ var match = Object.defineProperties({
 });
 
 // Return the name of a player
-function name(_x) {
+function name(_x3) {
   var _again = true;
 
   _function: while (_again) {
-    var player = _x;
+    var player = _x3;
     _again = false;
 
     if (player == null) return player;
     if (typeof player === 'function') {
-      _x = player();
-      _again = true;
-      continue _function;
-    }
-    if (typeof player === 'object') {
-      _x = player.name;
-      _again = true;
-      continue _function;
-    }
-    return player;
-  }
-}
-
-function last_char(_x2) {
-  var _again2 = true;
-
-  _function2: while (_again2) {
-    var player = _x2;
-    _again2 = false;
-
-    if (player == null) return player;
-    if (typeof player === 'function') {
-      _x2 = player();
-      _again2 = true;
-      continue _function2;
-    }
-    if (typeof player === 'object') {
-      _x2 = player.last_char;
-      _again2 = true;
-      continue _function2;
-    }
-    return player;
-  }
-}
-
-function set_last_char(_x3, _x4) {
-  var _again3 = true;
-
-  _function3: while (_again3) {
-    var player = _x3,
-        last_char = _x4;
-    _again3 = false;
-
-    if (player == null) return;
-    if (typeof player === 'function') {
       _x3 = player();
-      _x4 = last_char;
-      _again3 = true;
-      continue _function3;
+      _again = true;
+      continue _function;
     }
     if (typeof player === 'object') {
-      save(name(player), last_char);
-      player.last_char = last_char;
+      _x3 = player.name;
+      _again = true;
+      continue _function;
     }
+    return player;
   }
 }
 
@@ -330,10 +373,9 @@ function leagueFair(players) {
     // exists.
     if (homeMatches(p1) > homeMatches(p2)) {
       ;
-      var _temp = [p2, p1];
-      p1 = _temp[0];
-      p2 = _temp[1];
-      _temp;
+      var _ref7 = [p2, p1];
+      p1 = _ref7[0];
+      p2 = _ref7[1];
     }matches.push(match['new'](players[p1], players[p2]));
     matchups[p1][p2] = 1;
     matchups[p2][p1] = -1;
@@ -360,12 +402,6 @@ function leagueFair(players) {
     }
     return undefined;
   }
-}
-
-function initArray(length, initFunction) {
-  var a = new Array(length);
-  while (length-- > 0) a[length] = initFunction(length);
-  return a;
 }
 
 // Return a list of levels, where each level is a list of matches
@@ -435,16 +471,6 @@ function split(players, groups) {
   return [hd].concat(split(tl, g));
 }
 
-// range(start, end) return [start, ..., end].
-// range(end) return [1, ..., end].
-function range(start, end) {
-  if (end == null) {
-    end = start;
-    start = 1;
-  }
-  if (end < start) return [];else return range(start, end - 1).concat(end);
-}
-
 // Mix players out of elimination rounds as to not meet again in the
 // first level of a tourney.  [[1,2],[3,4],...] yields [1,3,2,4,...].
 function mix(groups) {
@@ -465,23 +491,10 @@ function last(matches) {
   return matches[matches.length - 1];
 }
 
-function shuffle(array) {
-  var r = function r() {
-    return Math.floor(Math.random() * array.length);
-  };
-
-  var shuffled = [];
-  for (var i = 0; i < array.length; i++) {
-    var j = r();
-    while (shuffled[j]) j = (j + 1) % array.length;
-    shuffled[j] = array[i];
-  }
-
-  return shuffled;
-}
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // View
+
+var domToModel = new WeakMap();
 
 var render = {
   events: function events(es) {
@@ -497,227 +510,204 @@ var render = {
   },
 
   league: function league(l) {
-    var $f = document.createElement('div');
-    $f.classList.add('league');
+    var $fragment = fromTemplate('#template-league');
+    var $l = $fragment.querySelector('.league');
 
-    var $header = document.createElement('h3');
-    $header.textContent = 'League';
-    $f.appendChild($header);
-
-    var $div = document.createElement('div');
-    $div.classList.add('league-content');
-
-    var $matches = document.createElement('ol');
-    $matches.classList.add('league-matches');
+    var $matches = $l.querySelector('.league-matches');
     l.forEach(function (m) {
       $matches.appendChild(render.match(m));
     });
-    $div.appendChild($matches);
 
-    var $scores = document.createElement('table');
-    $scores.classList.add('league-scores');
-    var $scores_head = document.createElement('tr');
+    var $scores = $l.querySelector('.league-scores tbody');
+    scores(l).forEach(function (_ref8) {
+      var _ref82 = _slicedToArray(_ref8, 2);
 
-    var $th_player = document.createElement('th');
-    $th_player.textContent = 'Player';
-    $scores_head.appendChild($th_player);
+      var k = _ref82[0];
+      var v = _ref82[1];
 
-    var $th_score = document.createElement('th');
-    $th_score.textContent = 'Score';
-    $scores_head.appendChild($th_score);
-
-    $scores.appendChild($scores_head);
-
-    scores(l).forEach(function (_ref7) {
-      var _ref72 = _slicedToArray(_ref7, 2);
-
-      var k = _ref72[0];
-      var v = _ref72[1];
-
-      var $s = document.createElement('tr');
-
-      var $name = document.createElement('td');
+      var $fragment = fromTemplate('#template-league-scores-row');
+      var $name = $fragment.children[0].children[0];
+      var $score = $fragment.children[0].children[1];
       $name.textContent = name(k);
-      $s.appendChild($name);
+      $score.textContent = v;
 
-      var $points = document.createElement('td');
-      $points.textContent = v;
-      $s.appendChild($points);
+      document.addEventListener('name-changed', function (event) {
+        if (event.detail.player === k) $name.textContent = name(k);
+      });
 
-      $scores.appendChild($s);
+      $scores.appendChild($fragment);
     });
 
-    $div.appendChild($scores);
+    document.addEventListener('winner-changed', function (event) {
+      scores(l).forEach(function (_ref9, i) {
+        var _ref92 = _slicedToArray(_ref9, 2);
 
-    $f.appendChild($div);
+        var k = _ref92[0];
+        var v = _ref92[1];
 
-    return $f;
+        var $row = $scores.children[i];
+        $row.children[0].textContent = name(k);
+        $row.children[1].textContent = v;
+      });
+    });
+
+    return $l;
   },
 
   tourney: function tourney(t) {
-    var $f = document.createElement('div');
-    $f.classList.add('tourney');
+    var $fragment = fromTemplate('#template-tourney');
+    var $t = $fragment.querySelector('.tourney');
 
-    var $header = document.createElement('h3');
-    $header.textContent = 'Tourney';
-    $f.appendChild($header);
-
-    var $t = document.createElement('div');
-    $t.classList.add('tourney-matches');
+    var $matches = $t.querySelector('.tourney-matches');
+    var $winnerLevel = $matches.children[0];
     t.forEach(function (l) {
-      $t.appendChild(render.level(l));
+      $matches.insertBefore(render.level(l), $winnerLevel);
     });
-    $f.appendChild($t);
 
-    var $winnerLevel = document.createElement('ol');
-    $winnerLevel.classList.add('level');
+    var $winner = $winnerLevel.querySelector('.winner');
+    var finale = last(t)[0];
+    var winner = finale.winner;
+    $winner.textContent = name(winner);
 
-    var $winner = document.createElement('span');
-    $winner.classList.add('player-name');
-    $winner.classList.add('winner');
-    $winner.textContent = name(last(t)[0].winner);
-    $winnerLevel.appendChild($winner);
+    document.addEventListener('name-changed', function (event) {
+      if (event.detail.player === winner) $winner.textContent = name(winner);
+    });
 
-    $t.appendChild($winnerLevel);
+    document.addEventListener('winner-changed', function (event) {
+      if (event.detail.match === finale) $winner.textContent = name(winner);
+    });
 
-    return $f;
+    return $t;
   },
 
   level: function level(l) {
-    var $f = document.createDocumentFragment();
-    $f.appendChild(render.matches(l));
-    return $f;
-  },
-
-  matches: function matches(ms) {
-    var $f = document.createElement('ol');
-    $f.classList.add('level');
-    ms.forEach(function (m) {
-      $f.appendChild(render.match(m));
+    var $fragment = fromTemplate('#template-tourney-level');
+    var $l = $fragment.children[0];
+    l.forEach(function (m) {
+      $l.appendChild(render.match(m));
     });
-    return $f;
+
+    return $l;
   },
 
   match: function match(m) {
-    var $f = document.createElement('li');
-    $f.classList.add('match');
-    if (m.p1 === m.p2) $f.classList.add('bye');
+    var $fragment = fromTemplate('#template-match');
+    var $m = $fragment.querySelector('.match');
 
-    var $player1 = document.createElement('div');
-    $player1.classList.add('player1');
-    $f.appendChild($player1);
+    domToModel.set($m, m);
 
-    var $p1 = render.player(m.p1, m);
-    $player1.appendChild($p1);
+    if (m.p1 === m.p2) $m.classList.add('bye');[m.p1, m.p2].forEach(function (p, i) {
+      var player = i + 1;
+      var $button = $m.querySelector('#radio-' + player);
+      $button.id = 'radio-' + genid();
 
-    var $char_p1 = render.chars_list(m.p1, m.p1_char);
-    $char_p1.addEventListener('change', function (event) {
-      m.p1_char = event.target.value;
-      set_last_char(m.p1, m.p1_char);
+      domToModel.set($button.parentNode, p);
+
+      if (name(m.p1) == null || name(m.p2) == null) $button.setAttribute('disabled', true);
+
+      var $label = $m.querySelector('.player' + player + ' label');
+      $label.textContent = name(p);
+      $label.setAttribute('for', $button.id);
+
+      document.addEventListener('winner-changed', function (event) {
+        if (event.detail.match === m) {
+          var winner = event.detail.winner;
+          $button.checked = winner === p;
+        } else {
+          $label.textContent = name(p);
+
+          if (name(m.p1) == null || name(m.p2) == null) $button.setAttribute('disabled', true);else $button.removeAttribute('disabled');
+        }
+      });
+
+      document.addEventListener('name-changed', function (event) {
+        if (event.detail.player === p) $label.textContent = name(p);
+      });
+
+      var $char = $m.querySelector('.player' + player + ' .char');
+      $char.value = retrieve(name(p));
+
+      document.addEventListener('char-changed', function (event) {
+        var charProp = 'p' + player + '_char';
+        if (event.detail.player === p) {
+          if (event.detail.match === m) m[charProp] = event.detail.char;else if (!m[charProp]) $char.value = event.detail.char;
+        }
+      });
+
+      document.addEventListener('shuffle-players', function (event) {
+        $label.textContent = name(p);
+        $char.value = retrieve(name(p));
+      });
     });
-    $p1.appendChild($char_p1);
-    $p1.addEventListener('click', saveChars);
 
-    var $player2 = document.createElement('div');
-    $player2.classList.add('player2');
-    $f.appendChild($player2);
-
-    var $p2 = render.player(m.p2, m);
-    $player2.appendChild($p2);
-
-    var $char_p2 = render.chars_list(m.p2, m.p2_char);
-    $char_p2.addEventListener('change', function (event) {
-      m.p2_char = event.target.value;
-      set_last_char(m.p2, m.p2_char);
-    });
-    $p2.appendChild($char_p2);
-    $p2.addEventListener('click', saveChars);
-
-    var $reset = document.createElement('button');
-    $reset.classList.add('reset-match');
-    $reset.textContent = 'X';
-    $reset.addEventListener('click', function () {
-      m.winner = null;
-      m.p1_char = null;
-      m.p2_char = null;
-    });
-    $f.appendChild($reset);
-
-    return $f;
-
-    function saveChars() {
-      m.p1_char = $char_p1.value;
-      m.p2_char = $char_p2.value;
-    }
-  },
-
-  chars_list: function chars_list(p, p_char) {
-    var $p = document.createElement('input');
-    $p.classList.add('char');
-    $p.type = 'text';
-    $p.placeholder = 'Dan';
-    $p.setAttribute('list', 'all-chars');
-    var ch = p_char || last_char(p) || retrieve(name(p));
-    if (ch != null) $p.value = ch;
-
-    return $p;
-  },
-
-  player: function player(p, m) {
-    var $f = document.createElement('div');
-    $f.classList.add('player-info');
-
-    var $button = document.createElement('input');
-    $button.id = 'radio-' + genid();
-    $button.setAttribute('type', 'radio');
-
-    $button.addEventListener('click', function () {
-      m.winner = p;
-    });
-    if (p === m.winner()) $button.setAttribute('checked', true);
-    if (name(m.p1) == null || name(m.p2) == null) $button.setAttribute('disabled', true);
-    $f.appendChild($button);
-
-    var $label = document.createElement('label');
-    $label.classList.add('player-name');
-    $label.textContent = name(p);
-    $label.setAttribute('for', $button.id);
-    $f.appendChild($label);
-
-    return $f;
+    return $m;
   },
 
   saveLink: function saveLink(events) {
-    var $div = document.createElement('div');
-    $div.classList.add('budokai-data');
+    var $div = document.querySelector('.budokai-data');
 
     var link = encode(serialize.all(events));
+    var url = 'mailto:?subject=[Budokai] Save me&body=' + link;
 
-    var $p = document.createElement('p');
-    $p.classList.add('data');
+    var $p = $div.querySelector('.data');
     $p.textContent = link;
-    $div.appendChild($p);
 
-    var $a = document.createElement('a');
-    $a.setAttribute('href', encodeURI('mailto:?subject=[Budokai] Save me&body=' + link));
-    $a.textContent = 'post';
-    $div.appendChild($a);
-
-    return $div;
-  } };
-
-var view = {
-  'new': function _new($root, events) {
-    return {
-      __proto__: this,
-      $root: $root, events: events };
+    var $a = $div.querySelector('a');
+    $a.setAttribute('href', encodeURI(url));
   },
 
-  refresh: function refresh() {
-    this.$root.innerHTML = '';
-    this.$root.appendChild(render.events(this.events));
-    this.$root.appendChild(render.saveLink(this.events));
-  } };
+  refreshPlayerList: function refreshPlayerList(n) {
+    var $players = document.querySelector('#player-list');
+
+    range(n).forEach(function (i) {
+      var $node = $players.childNodes[i - 1];
+      if ($node == null) {
+        var $fragment = fromTemplate('#template-player-name');
+        var $div = $fragment.querySelector('.name-container');
+        $div.id = 'player-' + i;
+
+        var $name = $div.querySelector('.name');
+        $name.value = retrieve($div.id) || 'P' + i;
+
+        var $lock = $div.querySelector('.lock');
+        $lock.id = 'lock-' + i;
+
+        var $label = $div.querySelector('label');
+        $label.setAttribute('for', $lock.id);
+
+        $players.appendChild($div);
+      } else {
+        $node.classList.remove('off');
+      }
+    });
+
+    range(n + 1, $players.childNodes.length).forEach(function (i) {
+      var $node = $players.childNodes[i - 1];
+      $node.classList.add('off');
+    });
+  },
+
+  refreshEvents: function refreshEvents(eventType) {
+    var $players = filter(document.querySelectorAll('#player-list .name'), function ($p) {
+      return !$p.parentNode.classList.contains('off');
+    });
+    var players = [];
+    forEach($players, function ($p) {
+      var p = { name: function name() {
+          return $p.value;
+        } };
+      players.push(p);
+      domToModel.set($p, p);
+    });
+
+    var evs = events(players, eventType);
+
+    var $list = document.querySelector('#match-list');
+    $list.innerHTML = '';
+    $list.appendChild(render.events(evs));
+    domToModel.set(document, evs);
+  }
+};
 
 var serialize = {
   all: function all(events) {
@@ -761,122 +751,174 @@ var serialize = {
         char: m.p1_char },
       p2: { name: name(m.p2),
         char: m.p2_char },
-      winner: winner };
-  } };
+      winner: winner
+    };
+  }
+};
 
-var encode = function encode(s) {
-  return btoa(encodeURI(s));
-};
-var decode = function decode(s) {
-  return decodeURI(atob(s));
-};
+function dispatch(eventName) {
+  var detail = arguments[1] === undefined ? null : arguments[1];
+
+  document.dispatchEvent(new CustomEvent(eventName, { detail: detail }));
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-  var $players = document.querySelector('#player-list');
-  var $list = document.querySelector('#match-list');
   var $n = document.querySelector('#n-players');
   var $isTourney = document.querySelector('#event-type-tourney');
   var $isLeague = document.querySelector('#event-type-league');
+  var $players = document.querySelector('#player-list');
+  var $list = document.querySelector('#match-list');
+  var $shuffle = document.querySelector('#shuffle-players');
 
-  var v = view['new']($list);
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Custom events
 
-  $n.addEventListener('input', refreshEvents);
-  $isTourney.addEventListener('change', refreshEvents);
-  $isLeague.addEventListener('change', refreshEvents);
-
-  function refreshEvents() {
+  function playersChanged() {
     var n = parseInt($n.value, 10);
-    var eventType = $isTourney.checked ? 'tourney' : 'league';
-    var players = [];
-
-    range(n).forEach(function (i) {
-      if ($players.childNodes[i] == null) {
-        var $div = document.createElement('div');
-        $div.id = 'player-' + i;
-        $div.classList.add('name-container');
-
-        var $name = document.createElement('input');
-        $name.classList.add('name');
-        $name.setAttribute('type', 'text');
-        $name.value = retrieve($div.id) || 'P' + i;
-        $div.appendChild($name);
-
-        var $lock = document.createElement('input');
-        $lock.id = 'lock-' + i;
-        $lock.classList.add('lock');
-        $lock.setAttribute('type', 'checkbox');
-        $lock.addEventListener('click', function () {
-          $name.classList.toggle('locked');
-          $name.disabled = !$name.disabled;
-        });
-        $div.appendChild($lock);
-
-        var $label = document.createElement('label');
-        $label.setAttribute('for', $lock.id);
-        $label.innerHTML = '<i class="fa fa-unlock"></i><i class="fa fa-lock"></i>';
-        $div.appendChild($label);
-
-        $players.appendChild($div);
-      } else {
-        $players.childNodes[i].classList.remove('off');
-        var $name = $players.querySelector('#player-' + i + ' .name');
-      }
-      players.push({ name: function name() {
-          return $name.value;
-        } });
-    });
-
-    range(n + 1, $players.childNodes.length - 1).forEach(function (i) {
-      $players.childNodes[i].classList.add('off');
-    });
-
-    v.events = events(players, eventType);
-    v.refresh();
+    dispatch('n-players-changed', n);
   }
 
-  $n.dispatchEvent(new Event('input'));
+  function eventTypeChanged() {
+    var eventType = $isTourney.checked ? 'tourney' : 'league';
+    dispatch('event-type-changed', eventType);
+  }
 
-  $players.addEventListener('input', function (event) {
+  function nameChanged(playerId, player, name) {
+    dispatch('name-changed', { playerId: playerId, player: player, name: name });
+  }
+
+  function shufflePlayers() {
+    dispatch('shuffle-players');
+  }
+
+  function lockPlayer($name) {
+    dispatch('lock-player', $name);
+  }
+
+  function winnerChanged(match, winner, $match) {
+    dispatch('winner-changed', { match: match, winner: winner, $match: $match });
+  }
+
+  function charChanged(match, player, char) {
+    dispatch('char-changed', { match: match, player: player, char: char });
+  }
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // DOM events -> custom events
+
+  $n.addEventListener('input', debounce(playersChanged, 30));
+  $isTourney.addEventListener('change', debounce(eventTypeChanged, 30));
+  $isLeague.addEventListener('change', debounce(eventTypeChanged, 30));
+
+  $players.addEventListener('input', debounce(function (event) {
     if (event.target.classList.contains('name')) {
-      save(event.target.parentNode.id, event.target.value);
-      v.refresh();
+      var playerId = event.target.parentNode.id;
+      var player = domToModel.get(event.target);
+      var _name = event.target.value;
+      nameChanged(playerId, player, _name);
     }
+  }, 100));
+
+  $shuffle.addEventListener('click', debounce(shufflePlayers, 30));
+
+  $players.addEventListener('click', debounce(function (event) {
+    if (event.target.classList.contains('lock')) {
+      var $name = event.target.parentNode.querySelector('.name');
+      lockPlayer($name);
+    }
+  }, 30));
+
+  $list.addEventListener('change', debounce(function (event) {
+    if (event.target.classList.contains('winner-select')) {
+      var $player = event.target.parentNode;
+      var $match = $player.parentNode.parentNode;
+      var winner = domToModel.get($player);
+      var _match = domToModel.get($match);
+      winnerChanged(_match, winner, $match);
+    }
+  }, 30));
+
+  $list.addEventListener('input', debounce(function (event) {
+    if (event.target.classList.contains('char')) {
+      var $player = event.target.parentNode;
+      var $match = $player.parentNode.parentNode;
+      var player = domToModel.get($player);
+      var _match2 = domToModel.get($match);
+      var char = event.target.value;
+      charChanged(_match2, player, char);
+    }
+  }, 100));
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Handling custom events
+
+  document.addEventListener('n-players-changed', function (event) {
+    render.refreshPlayerList(event.detail);
+    render.refreshEvents($isTourney.checked ? 'tourney' : 'league');
+
+    render.saveLink(domToModel.get(document));
   });
 
-  $list.addEventListener('change', function (event) {
-    // Need the setTimeout to let the event bubble and be caught by
-    // other listeners before recreating the view
-    setTimeout(function () {
-      v.refresh();
-    }, 0);
+  document.addEventListener('event-type-changed', function (event) {
+    render.refreshEvents(event.detail);
+
+    render.saveLink(domToModel.get(document));
   });
 
-  var $shuffle = document.querySelector('#shuffle-players');
-  $shuffle.addEventListener('click', function () {
-    var $names = [].filter.call($players.querySelectorAll('input.name'), function ($p) {
+  document.addEventListener('name-changed', function (event) {
+    save(event.detail.playerId, event.detail.name);
+
+    render.saveLink(domToModel.get(document));
+  });
+
+  document.addEventListener('shuffle-players', function () {
+    var $unlockedNames = filter($players.querySelectorAll('input.name'), function ($p) {
       return !$p.parentNode.classList.contains('off') && !$p.classList.contains('locked');
     });
-    var names = [].map.call($names, function ($i) {
+    var names = map($unlockedNames, function ($i) {
       return $i.value;
     });
     names = shuffle(names);
-    [].forEach.call($names, function ($n, i) {
+    forEach($unlockedNames, function ($n, i) {
       $n.value = names[i];
     });
-    v.refresh();
   });
-});
 
-var save = function save(k, v) {
-  return localStorage.setItem(k, v);
-};
-var retrieve = function retrieve(k) {
-  return localStorage.getItem(k);
-};
-var genid = (function () {
-  var i = 0;return function () {
-    return ++i;
-  };
-})();
+  document.addEventListener('lock-player', function (event) {
+    var $name = event.detail;
+    $name.classList.toggle('locked');
+    $name.disabled = !$name.disabled;
+  });
+
+  document.addEventListener('winner-changed', function (event) {
+    var _event$detail = event.detail;
+    var match = _event$detail.match;
+    var $match = _event$detail.$match;
+    var winner = _event$detail.winner;
+
+    match.winner = winner;
+
+    match.p1_char = $match.querySelector('.player1 .char').value;
+    match.p2_char = $match.querySelector('.player2 .char').value;
+
+    render.saveLink(domToModel.get(document));
+  });
+
+  document.addEventListener('char-changed', function (event) {
+    var _event$detail2 = event.detail;
+    var player = _event$detail2.player;
+    var char = _event$detail2.char;
+
+    save(name(player), char);
+
+    render.saveLink(domToModel.get(document));
+  });
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Build the page with default values
+
+  playersChanged();
+  eventTypeChanged();
+});
 
 //# sourceMappingURL=budokai.js.map
