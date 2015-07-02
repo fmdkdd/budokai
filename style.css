@@ -35,7 +35,11 @@ section h2 {
   border: 1px solid #ccc;
 }
 
-.lock {display: none}
+.lock {
+  position: absolute;
+  visibility: hidden;
+}
+
 .lock + label {
   font-size: 20px;
   vertical-align: middle;
@@ -49,9 +53,17 @@ section h2 {
   color: #888;
   background-color: #eee;
 }
-.lock + label .fa:nth-child(2) {display: none}
-.lock:checked + label .fa:nth-child(1) { display:none }
-.lock:checked + label .fa:nth-child(2) { display:inherit; color: #e67e22 }
+
+.lock + label::before {
+  font-family: 'FontAwesome';
+  content: '\f09c';
+}
+
+.lock:checked + label::before {
+  font-family: 'FontAwesome';
+  content: '\f023';
+  color: #e67e22;
+}
 
 .off {display: none}
 
