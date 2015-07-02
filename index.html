@@ -10,31 +10,29 @@
     <script src="budokai.js"></script>
   </head>
   <body>
-    <div>
-      <label for="n-players">Number of players</label>
-      <input id="n-players" type="range" min="3" max="16" autofocus>
-    </div>
-
-    <input id="event-type-tourney" type="radio" name="event-type" checked>
-    <label for="event-type-tourney">Tourney</label>
-    <input id="event-type-league" type="radio" name="event-type">
-    <label for="event-type-league">League</label>
-
     <section id="players">
       <h2>Players</h2>
-      <button id="shuffle-players">Shuffle</button>
+      <label for="n-players">How many?</label>
+      <input id="n-players" type="range" min="3" max="16" autofocus>
+      <output for="n-players" id="n-players-output"></output>
+      <button id="shuffle-players"></button>
       <div id="player-list"></div>
     </section>
 
     <section id="matches">
       <h2>Matches</h2>
+
+      <input id="event-type-tourney" type="radio" name="event-type" checked>
+      <label for="event-type-tourney">Tourney</label>
+      <input id="event-type-league" type="radio" name="event-type">
+      <label for="event-type-league">League</label>
+
       <div id="match-list"></div>
     </section>
 
     <div class="budokai-data">
-      <p class="data">
-      </p>
-      <a href="">post</a>
+      <a href="">save</a>
+      <p class="data"></p>
     </div>
 
     <datalist id="all-chars">
@@ -103,6 +101,7 @@
             <input class="char" type="text" placeholder="Dan" list="all-chars">
           </div>
         </div>
+        <span class="separator"></span>
         <div class="player2">
           <div class="player-info">
             <input id="radio-2" class="winner-select" type="radio">
@@ -121,8 +120,8 @@
           <table class="league-scores">
             <thead>
             <tr>
-              <th>Player</th>
-              <th>Score</th>
+              <th></th>
+              <th>Scores</th>
             </tr>
             </thead>
             <tbody></tbody>

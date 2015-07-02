@@ -1,39 +1,75 @@
 * { margin: 0; padding: 0; }
 
 html {
-  font-size: 20px;
+  font-size: 25px;
+  font-family: serif;
   color: #444;
+  max-width: 40rem;
 }
 
 body {
   background: url("bg.png");
-  margin: 2rem 1rem;
+  margin: .5rem .25rem;
 }
 
-section {
-  margin-top: 2rem;
+section + section {
+  margin-top: 1rem;
+}
+
+h3 {
+  margin-top: 1rem;
+  margin-bottom: .5rem;
+  font-size: 0.8rem;
 }
 
 section h2 {
+  font-size: 1rem;
+  margin-bottom: .5rem;
+}
+
+#n-players {
+  vertical-align: middle;
+  width: 5rem;
+}
+
+#n-players-output {
+  display:inline-block;
   margin-bottom: 1rem;
 }
 
 .name-container {
   display: inline-block;
   margin-right: .5rem;
-  margin-bottom: .2rem;
+  margin-bottom: .25rem;
   font-size: 0; /* To hide DOM text nodes between name and label */
+}
+
+#shuffle-players::before {
+  font-family: 'FontAwesome';
+  content: '\f074  ';
+}
+
+#shuffle-players {
+  font-size: 1.2rem;
+  height: 1.8rem;
+  width: 100%;
+  color: #666;
+  margin-bottom: 1rem;
 }
 
 #player-list .name {
   vertical-align: middle;
   box-sizing: padding-box;
-  width: 5rem;
-  height: 1.5rem;
-  padding: .15rem .3rem;
+  width: 4.5rem;
+  height: 1.8rem;
+  padding: 0 .2rem;
   color: #666;
   border: 1px solid #ccc;
+  font-size: .8rem;
+  font-family: serif;
 }
+
+.off {display: none}
 
 .lock {
   position: absolute;
@@ -41,13 +77,13 @@ section h2 {
 }
 
 .lock + label {
-  font-size: 20px;
+  font-size: 1.2rem;
   vertical-align: middle;
   display: inline-block;
   box-sizing: padding-box;
-  height: 1.5rem;
-  width: 1.4rem;
-  padding: .15rem .2rem;
+  height: 1.8rem;
+  width: 1.8rem;
+  padding: .3rem .35rem;
   border: 1px solid #ccc;
   border-left: none;
   color: #888;
@@ -65,35 +101,45 @@ section h2 {
   color: #e67e22;
 }
 
-.off {display: none}
+/* Matches */
+
+.match {
+  font-size: 0.8rem;
+}
 
 .char {
-  width: 3rem;
-  padding: .15rem .3rem;
+  width: 2.1rem;
+  padding: .1rem .1rem;
   color: #666;
   border: 1px solid #ccc;
 }
 
-#match-list {
-  margin-left: 1rem;
+.winner-select {
+  position: absolute;
+  visibility: hidden;
 }
 
-.reset-match {
-  display: none;
+.player-name {
+  border-bottom: 2px solid #666;
+  border-color: rgba(230, 126, 34, 0);
+  transition: border-color .1s;
+}
+
+.winner-select:checked + label {
+  border-color: rgba(230, 126, 34, 1);
 }
 
 /* League */
 
 .league-content {
   display: flex;
-}
-
-.league-matches {
-  margin-right: 4rem;
+  flex-flow: column;
 }
 
 .league-scores {
+  margin-top: 0.5rem;
   border-collapse: collapse;
+  font-size: 0.8rem;
 }
 
 .league-scores th {
@@ -102,7 +148,7 @@ section h2 {
 
 .league-scores td {
   border-top: 1px dotted #aaa;
-  padding: .3rem 0;
+  padding: .1rem 0;
 }
 
 .league-scores thead tr {
@@ -123,6 +169,10 @@ section h2 {
   height: 1.5rem;
 }
 
+.league .separator::before {
+  content: '—';
+}
+
 .league .player1, .league .player2 {
   display: table-cell;
   vertical-align: top;
@@ -134,12 +184,8 @@ section h2 {
   align-items: baseline;
 }
 
-.league .player1 {
-  padding-right: 1rem;
-}
-
-.player-name {
-  padding: 0 .3rem;
+.league .player-name {
+  margin: 0 .3rem;
 }
 
 /* Tourney */
@@ -151,11 +197,16 @@ section h2 {
 
 .level {
   list-style: none;
+  min-width: 6.5rem;
 
   display: flex;
   flex-flow: column;
   justify-content: space-around;
-  margin-right: 2rem;
+  margin-right: 0rem;
+}
+
+.tourney .player-info {
+  margin: .3rem 0;
 }
 
 .tourney .match {
@@ -169,19 +220,27 @@ section h2 {
   color: #ca1;
 }
 
+.tourney .winner-select:disabled + label + input {
+  visibility: hidden;
+}
+
+.tourney .winner-select:disabled + label {
+  color: #aaa;
+}
+
 /* Budokai data */
 
 .budokai-data {
   margin-top: 2rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .budokai-data .data {
-  margin-bottom: 0.5rem;
-  font-size: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.3rem;
   color: #aaa;
   word-wrap: break-word;
-  max-width: 20rem;
+  max-width: 100%;
 }
 
 /* Stats */
