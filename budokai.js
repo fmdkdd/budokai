@@ -764,6 +764,7 @@ function dispatch(eventName) {
 
 document.addEventListener('DOMContentLoaded', function () {
   var $n = document.querySelector('#n-players');
+  var $nOutput = document.querySelector('#n-players-output');
   var $isTourney = document.querySelector('#event-type-tourney');
   var $isLeague = document.querySelector('#event-type-league');
   var $players = document.querySelector('#player-list');
@@ -853,6 +854,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Handling custom events
 
   document.addEventListener('n-players-changed', function (event) {
+    $nOutput.value = event.detail;
     render.refreshPlayerList(event.detail);
     render.refreshEvents($isTourney.checked ? 'tourney' : 'league');
 

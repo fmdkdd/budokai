@@ -641,6 +641,7 @@ function dispatch(eventName, detail = null) {
 
 document.addEventListener('DOMContentLoaded', () => {
   let $n = document.querySelector('#n-players')
+  let $nOutput = document.querySelector('#n-players-output')
   let $isTourney = document.querySelector('#event-type-tourney')
   let $isLeague = document.querySelector('#event-type-league')
   let $players = document.querySelector('#player-list')
@@ -730,6 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handling custom events
 
   document.addEventListener('n-players-changed', event => {
+    $nOutput.value = event.detail
     render.refreshPlayerList(event.detail)
     render.refreshEvents($isTourney.checked ? 'tourney' : 'league')
 
