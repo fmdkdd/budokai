@@ -115,6 +115,7 @@ section h2 {
 }
 
 .char {
+  font-size: 0.5rem;
   width: 2.1rem;
   padding: .1rem .1rem;
   color: #666;
@@ -204,7 +205,7 @@ section h2 {
 
 .level {
   list-style: none;
-  min-width: 6.5rem;
+  min-width: 7rem;
 
   display: flex;
   flex-flow: column;
@@ -212,17 +213,71 @@ section h2 {
   margin-right: 0rem;
 }
 
+.tourney .match {
+  padding: .5rem .1rem;
+  /* padding: 0 .1rem; */
+  position: relative;
+  /* border-right: 1px solid black; */
+}
+
 .tourney .player-info {
   margin: .3rem 0;
 }
 
-.tourney .match {
-  margin: .5rem 0;
+.tourney .match::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0rem;
+  left: -.7rem;
+  width: 1.5rem;
+  height: .5rem;
+  border-top: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+}
+
+.tourney .match::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0rem;
+  left: -.7rem;
+  width: 1.5rem;
+  height: .5rem;
+  border-bottom: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+}
+
+/* Have to manually offset the ticks */
+.tourney .level:nth-child(1) .match::before,
+.tourney .level:nth-child(1) .match::after {
+  display: none;
+}
+
+.tourney .level:nth-child(3) .match::before {
+  top: -2.1rem;
+  height: 2.1rem;
+}
+
+.tourney .level:nth-child(3) .match::after {
+  bottom: -2.1rem;
+  height: 2.1rem;
+}
+
+.tourney .level:nth-child(4) .match::before {
+  top: -6.2rem;
+  height: 6.2rem;
+}
+
+.tourney .level:nth-child(4) .match::after {
+  bottom: -6.2rem;
+  height: 6.2rem;
 }
 
 .tourney .bye {visibility: hidden}
 
-.tourney .winner:before {
+.tourney .winner { font-size: .8rem; }
+.tourney .winner::before {
   content: '勝者: ';
   color: #ca1;
 }
