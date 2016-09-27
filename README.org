@@ -1,0 +1,12 @@
+Web application to help running illegal street-fighting tournaments.
+
+Features:
+
+- Supports tournaments with odd players (from 3 to 16)
+- Lock some players in place while shuffling the others
+- Local storage for player names and most recently used character for that player
+- Serialization as base64-encoded JSON
+- Mobile friendly
+- *No data collection, no analytics*
+
+Use at http://fmdkdd.github.io/budokai
