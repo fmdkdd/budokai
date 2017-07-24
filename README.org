@@ -9,4 +9,4 @@ Features:
 - Mobile friendly
 - *No data collection, no analytics*
 
-Use at http://fmdkdd.github.io/budokai
+Use at [[http://0xc0de.fr/budokai]]
